@@ -26,24 +26,27 @@ int main()
 
     cout << "Connected to the server. Sending messages..." << endl;
 
-    int counter = 0; // Counter for messages
+    int i = 123;
+    uint8_t message[14]; // 1 + 1 + 4 (4 bytes voor een uint32) * 3 = 14
+    message[1] = (3 << 4) | 0; // 3 voor 3 elementen, 0 voor uint32
+    uint32_t data[] = {6324, 1853, 24};
+    memcpy(message + 2, data, 12);
 
     while (true) {
-        // Convert the integer to a string and send it
-        string message = to_string(counter);
-        if (send(clientSocket, message.c_str(), message.length(), 0) == -1) {
+        message[0] = i; // message ID
+
+        if (send(clientSocket, message, 14, 0) == -1) {
             cerr << "Send failed! Error code: " << errno << endl;
             this_thread::sleep_for(chrono::seconds(1));
             continue;
         }
 
-        cout << "Sent: " << message << endl;
-        
-        // Increment counter
-        counter++;
+        cout << "Sent message with ID: " << i << endl;
 
         // Sleep for 1 second
         this_thread::sleep_for(chrono::seconds(1));
+
+        i++;
     }
 
     close(clientSocket);
