@@ -4,12 +4,26 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <thread>
+#include <QApplication>
 
-#include "socketserver.h"
+#include "main_window.h"
+#include "serversocket.h"
 
 using namespace std;
 
-int main() {
+int runQT(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    MainWindow mainWindow;
+    mainWindow.show();
+
+    return app.exec();
+}
+
+int main(int argc, char *argv[]) {
+    thread qtThread(runQT, argc, argv);
+    qtThread.detach();
+
     int serverSocket = setup();
 
     if(serverSocket == 1) {

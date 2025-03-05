@@ -7,6 +7,8 @@
 #include <chrono>
 #include <thread>
 
+#include "clientsocket.h"
+
 using namespace std;
 
 int main()
