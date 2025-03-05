@@ -5,11 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCES
     main.cpp
+    globals.cpp
     serversocket.cpp
     main_window.cpp
 )
 
 set(HEADERS
+    globals.h
     bedieningspaneel.h
     serversocket.h
     main_window.h

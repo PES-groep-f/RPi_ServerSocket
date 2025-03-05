@@ -52,10 +52,10 @@ public:
     QLabel *label;
     QWidget *widget2;
     QGridLayout *gridLayout_5;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QPushButton *pushButton_4;
+    QPushButton *lampen_keuken;
+    QPushButton *ventilator;
+    QPushButton *deuren;
+    QPushButton *drukknop;
     QWidget *widget3;
     QGridLayout *gridLayout_6;
     QLabel *label_6;
@@ -189,36 +189,36 @@ public:
         gridLayout_5 = new QGridLayout(widget2);
         gridLayout_5->setObjectName(QString::fromUtf8("gridLayout_5"));
         gridLayout_5->setContentsMargins(0, 0, 0, 0);
-        pushButton = new QPushButton(widget2);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        lampen_keuken = new QPushButton(widget2);
+        lampen_keuken->setObjectName(QString::fromUtf8("lampen_keuken"));
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
-        pushButton->setSizePolicy(sizePolicy);
+        sizePolicy.setHeightForWidth(lampen_keuken->sizePolicy().hasHeightForWidth());
+        lampen_keuken->setSizePolicy(sizePolicy);
 
-        gridLayout_5->addWidget(pushButton, 0, 0, 1, 1);
+        gridLayout_5->addWidget(lampen_keuken, 0, 0, 1, 1);
 
-        pushButton_2 = new QPushButton(widget2);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        sizePolicy.setHeightForWidth(pushButton_2->sizePolicy().hasHeightForWidth());
-        pushButton_2->setSizePolicy(sizePolicy);
+        ventilator = new QPushButton(widget2);
+        ventilator->setObjectName(QString::fromUtf8("ventilator"));
+        sizePolicy.setHeightForWidth(ventilator->sizePolicy().hasHeightForWidth());
+        ventilator->setSizePolicy(sizePolicy);
 
-        gridLayout_5->addWidget(pushButton_2, 0, 1, 1, 1);
+        gridLayout_5->addWidget(ventilator, 0, 1, 1, 1);
 
-        pushButton_3 = new QPushButton(widget2);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        sizePolicy.setHeightForWidth(pushButton_3->sizePolicy().hasHeightForWidth());
-        pushButton_3->setSizePolicy(sizePolicy);
+        deuren = new QPushButton(widget2);
+        deuren->setObjectName(QString::fromUtf8("deuren"));
+        sizePolicy.setHeightForWidth(deuren->sizePolicy().hasHeightForWidth());
+        deuren->setSizePolicy(sizePolicy);
 
-        gridLayout_5->addWidget(pushButton_3, 1, 0, 1, 1);
+        gridLayout_5->addWidget(deuren, 1, 0, 1, 1);
 
-        pushButton_4 = new QPushButton(widget2);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
-        sizePolicy.setHeightForWidth(pushButton_4->sizePolicy().hasHeightForWidth());
-        pushButton_4->setSizePolicy(sizePolicy);
+        drukknop = new QPushButton(widget2);
+        drukknop->setObjectName(QString::fromUtf8("drukknop"));
+        sizePolicy.setHeightForWidth(drukknop->sizePolicy().hasHeightForWidth());
+        drukknop->setSizePolicy(sizePolicy);
 
-        gridLayout_5->addWidget(pushButton_4, 1, 1, 1, 1);
+        gridLayout_5->addWidget(drukknop, 1, 1, 1, 1);
 
         widget3 = new QWidget(centralwidget);
         widget3->setObjectName(QString::fromUtf8("widget3"));
@@ -327,10 +327,10 @@ public:
         label_9->setText(QCoreApplication::translate("MainWindow", "UIT", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "AAN", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Felheid RGB Lampen", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Lampen Keuken Aan / Uit", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Ventilator Aan / Uit", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Deuren Open / Dicht", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "Tafel Drukknop", nullptr));
+        lampen_keuken->setText(QCoreApplication::translate("MainWindow", "Lampen Keuken Aan / Uit", nullptr));
+        ventilator->setText(QCoreApplication::translate("MainWindow", "Ventilator Aan / Uit", nullptr));
+        deuren->setText(QCoreApplication::translate("MainWindow", "Deuren Open / Dicht", nullptr));
+        drukknop->setText(QCoreApplication::translate("MainWindow", "Tafel Drukknop", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "Temperatuur (\302\260C)", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Luchtvochtigheid", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "CO2 Gehalte", nullptr));

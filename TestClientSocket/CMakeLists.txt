@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(SocketClient)
+set(CMAKE_CXX_STANDARD 17)
 
-set(FILES main.cpp socketclient.cpp)
+set(SOURCES
+    main.cpp
+    clientsocket.cpp
+)
 
-add_executable(SocketClient ${FILES})
+set(HEADERS
+    clientsocket.h
+)
+
+add_executable(SocketClient
+    ${SOURCES}
+    ${HEADERS}
+)

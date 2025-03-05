@@ -4,11 +4,14 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <thread>
+#include <bitset>
+
+#include "globals.h"
 
 using namespace std;
 
 // Function to handle communication with a single client
-void handleClient(int clientSocket) {
+void handleClient(int clientSocket, char ip_address[]) {
     cout << "Socket " << clientSocket << " opened." << endl;
 
     uint8_t buffer[1024] = {0};
@@ -43,9 +46,6 @@ void handleClient(int clientSocket) {
                 cout << "Data " << i << ": " << data[i] << endl;
             }
 
-            for (int i = 0; i < vectorLength; ++i) {
-                cout << "Data " << i << ": " << data[i] << endl;
-            }
         } else if (vectorDataType == 1) { // int32
             int32_t data[vectorLength];
             memcpy(data, dataPtr, sizeof(int32_t) * vectorLength);
@@ -68,12 +68,10 @@ void handleClient(int clientSocket) {
                 cout << "Data " << i << ": " << data[i] << endl;
             }
         } else if (vectorDataType == 4) { // ASCII null-terminated string
-            char data[vectorLength];
-            memcpy(data, dataPtr, sizeof(char) * vectorLength);
-    
-            for (int i = 0; i < vectorLength; ++i) {
-                cout << "Data " << i << ": " << data[i] << endl;
-            }
+            char data[1024];
+            memcpy(data, dataPtr, 1024);
+
+            cout << "Data " << ": " << data << endl;
         }
 
         // Respond to the client
@@ -84,6 +82,39 @@ void handleClient(int clientSocket) {
     // Close the client socket after communication
     close(clientSocket);
     cout << "Socket " << clientSocket << " closed." << endl;
+    lock_guard<mutex> lock(clientMapMutex);
+    string s(ip_address);
+    clientMap.erase(s);
+}
+
+int send_dataframe(
+    string ip_address, 
+    uint8_t messageID,
+    int vector_size, // <= 15
+    int datatype, //  0..4, see docs/dataformaat
+    uint8_t* data, 
+    uint datasize // <= 1022
+) {
+    lock_guard<mutex> lock(clientMapMutex);
+    if (clientMap.find(ip_address) != clientMap.end()) {
+        uint8_t message[2 + datasize] = {};
+        message[0] = messageID;
+        message[1] = (vector_size << 4) | datatype;
+        memcpy(message + 2, data, datasize);
+        if(send(clientMap[ip_address], message, datasize + 2, 0) == -1) {
+            cerr << "Message to client " << ip_address << " failed!" << endl;
+            return -1;
+        } else {
+            cout << "Sent data ";
+            for(size_t i = 0; i < datasize; ++i) {
+                cout << bitset<8>(data[i]) << " ";
+            }
+            cout << " to client " << ip_address << endl;
+            return 0;
+        }
+    } 
+    cerr << "IP address " << ip_address << " could not be found in the client map." << endl;
+    return -1;
 }
 
 int setup() {

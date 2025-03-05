@@ -18,7 +18,7 @@ int main()
     sockaddr_in serverAddress;
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_port = htons(8080);
-    inet_pton(AF_INET, "169.254.10.157", &serverAddress.sin_addr);
+    inet_pton(AF_INET, "127.0.0.1", &serverAddress.sin_addr);
     
     if (connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
         perror("Connection failed");
@@ -29,21 +29,21 @@ int main()
     cout << "Connected to the server. Sending messages..." << endl;
 
     int i = 123;
-    uint8_t message[14]; // 1 + 1 + 4 (4 bytes voor een uint32) * 3 = 14
-    message[1] = (3 << 4) | 0; // 3 voor 3 elementen, 0 voor uint32
-    uint32_t data[] = {6324, 1853, 24};
-    memcpy(message + 2, data, 12);
+    uint8_t message[13]; 
+    message[1] = (3 << 4) | 4;
+    char data[] = "hello world";
+    memcpy(message + 2, data, 11);
 
     while (true) {
         message[0] = i; // message ID
 
-        if (send(clientSocket, message, 14, 0) == -1) {
-            cerr << "Send failed! Error code: " << errno << endl;
-            this_thread::sleep_for(chrono::seconds(1));
-            continue;
-        }
+        // if (send(clientSocket, message, 13, 0) == -1) {
+        //     cerr << "Send failed! Error code: " << errno << endl;
+        //     this_thread::sleep_for(chrono::seconds(1));
+        //     continue;
+        // }
 
-        cout << "Sent message with ID: " << i << endl;
+        // cout << "Sent message with ID: " << i << endl;
 
         // Sleep for 1 second
         this_thread::sleep_for(chrono::seconds(1));

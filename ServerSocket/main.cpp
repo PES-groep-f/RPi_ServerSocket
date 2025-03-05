@@ -2,12 +2,15 @@
 #include <cstring>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <thread>
+#include <mutex> 
 #include <QApplication>
 
 #include "main_window.h"
 #include "serversocket.h"
+#include "globals.h"
 
 using namespace std;
 
@@ -42,14 +45,24 @@ int main(int argc, char *argv[]) {
 
     // Accept multiple clients using threads
     while (true) {
-        int clientSocket = accept(serverSocket, nullptr, nullptr);
+        struct sockaddr_in clientAddr;
+        socklen_t clientAddrLen = sizeof(clientAddr);
+        int clientSocket = accept(serverSocket, (struct sockaddr*)&clientAddr, &clientAddrLen);
         if (clientSocket == -1) {
             cerr << "Client connection failed!" << endl;
             continue;
         }
+        
+        char clientIP[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, INET_ADDRSTRLEN);
+        cout << "New connection from: " << clientIP << endl;
 
+        {
+            lock_guard<mutex> lock(clientMapMutex);
+            clientMap[clientIP] = clientSocket; // Store the IP -> socket mapping
+        }
         // Start a new thread to handle the client
-        thread clientThread(handleClient, clientSocket);
+        thread clientThread(handleClient, clientSocket, clientIP);
         clientThread.detach(); // Allow the thread to run independently
     }
 

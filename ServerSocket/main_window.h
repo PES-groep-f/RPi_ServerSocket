@@ -17,8 +17,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void button_lampen_keuken_clicked();
+
 private:
     Ui::MainWindow ui;
+
 };
 
 #endif // MAIN_WINDOW_H
