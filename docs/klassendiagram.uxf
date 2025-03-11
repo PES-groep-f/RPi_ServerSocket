@@ -1,0 +1,85 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>0</x><y>0</y><w>330</w><h>260</h></coordinates><panel_attributes>ServerSocket
+--
++ clientMap: unordered_map&lt;string, int&gt;
++ clientMapMutex: mutex
+- raspberryClientIP: string
+--
+#setup(): int
+
+#handleClient(int clientSocket, char ip_address[]): int 
+#send_dataframe(
+    string ip_address, 
+    uint8_t messageID,
+    int vector_size, // &lt;= 15
+    int datatype, //  0..4, zie docs/dataformaat
+    uint8_t* data, 
+    uint datasize // &lt;= 1022
+): int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>0</y><w>270</w><h>180</h></coordinates><panel_attributes>ClientSocket
+--
+- rgb1_messageID: string 
+- rgb2_messageID: string
+- keukenlamp_messageID: string
+- ventilator_messageID: string
+- humidity_sensor_messageID: string
+- co2_sensor_messageID: string
+- temperature_sensor_messageID: string
+- door_messageID: string
+--
+#setup(): int
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>0</y><w>340</w><h>110</h></coordinates><panel_attributes>&lt;&lt;QMainWindow&gt;&gt;
+MainWindow
+--
+-ui: Ui::MainWindow
+--
+#MainWindow(QWidget *parent = nullptr): MainWindow
+#button_lampen_keuken_clicked(): void </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>180</y><w>440</w><h>730</h></coordinates><panel_attributes>&lt;&lt;Ui_MainWindow&gt;&gt;
+Ui_MainWindow
+--
++ QWidget *centralwidget;
++  QWidget *widget;
++  QHBoxLayout *horizontalLayout;
++  QGridLayout *gridLayout;
++  QLabel *label_2;
++  QSlider *verticalSlider;
++  QLCDNumber *lcdNumber_4;
++  QGridLayout *gridLayout_2;
++  QLabel *label_3;
++  QSlider *verticalSlider_2;
++  QLCDNumber *lcdNumber_5;
++  QGridLayout *gridLayout_3;
++  QLabel *label_4;
++  QSlider *verticalSlider_3;
++  QLCDNumber *lcdNumber_6;
++  QWidget *widget1;
++  QGridLayout *gridLayout_4;
++  QLabel *label_9;
++  QSlider *horizontalSlider;
++  QLabel *label_10;
++  QLabel *label;
++  QWidget *widget2;
++  QGridLayout *gridLayout_5;
++  QPushButton *lampen_keuken;
++  QPushButton *ventilator;
++  QPushButton *deuren;
++  QPushButton *drukknop;
++  QWidget *widget3;
++  QGridLayout *gridLayout_6;
++  QLabel *label_6;
++  QLabel *label_7;
++  QLabel *label_5;
++  QLCDNumber *lcdNumber;
++  QLCDNumber *lcdNumber_2;
++  QLCDNumber *lcdNumber_3;
++  QWidget *widget4;
++  QGridLayout *gridLayout_7;
++  QLabel *label_8;
++  QTextEdit *textEdit;
++  QDialogButtonBox *buttonBox;
++  QMenuBar *menubar;
++  QStatusBar *statusbar;
+--
+# setupUi(QMainWindow *MainWindow): void
+# retranslateUi(QMainWindow *MainWindow): void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>100</y><w>50</w><h>100</h></coordinates><panel_attributes>lt=&lt;-
+m1=1..1
+m2=1..1</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element></diagram>
