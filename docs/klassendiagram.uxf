@@ -1,11 +1,11 @@
 <diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes
-</help_text><element><id>UMLClass</id><coordinates><x>81</x><y>360</y><w>216</w><h>99</h></coordinates><panel_attributes>&lt;&lt;RPi_Server&gt;&gt;
+</help_text><element><id>UMLClass</id><coordinates><x>22</x><y>386</y><w>216</w><h>99</h></coordinates><panel_attributes>&lt;&lt;RPi_Server&gt;&gt;
 SocketServer
 --
 + bedieningspaneel: UI
 + client_RPi_IP_address: string
 - sockets: map&lt;socketID, IP_address&gt;
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>81</x><y>36</y><w>306</w><h>216</h></coordinates><panel_attributes>&lt;&lt;RPi_Server&gt;&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>22</x><y>62</y><w>306</w><h>216</h></coordinates><panel_attributes>&lt;&lt;RPi_Server&gt;&gt;
 Qt::MainWindow
 Bedieningspaneel
 --
@@ -20,27 +20,27 @@ Bedieningspaneel
 #knop_keukenlamp(aan: boolean): void
 #slider_rgblamp(r: uint8_t, g: uint8_t, b: uint8_t): void
 #slider_ventilator(pwm: float): void
-#knop_deur(open: boolean): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>243</y><w>54</w><h>135</h></coordinates><panel_attributes>lt=&lt;-
+#knop_deur(open: boolean): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>121</x><y>269</y><w>54</w><h>135</h></coordinates><panel_attributes>lt=&lt;-
 m1=1
 m2=1
-heeft</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>81</x><y>540</y><w>189</w><h>72</h></coordinates><panel_attributes>&lt;&lt;Wemos&gt;&gt;
+heeft</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>22</x><y>566</y><w>189</w><h>72</h></coordinates><panel_attributes>&lt;&lt;Wemos&gt;&gt;
 Tafel
 --
-#drukknop(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>450</y><w>180</w><h>108</h></coordinates><panel_attributes>lt=&lt;-
+#drukknop(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>121</x><y>476</y><w>180</w><h>108</h></coordinates><panel_attributes>lt=&lt;-
 m1=3
 m2=1
-communiceert draadloos met</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>360</y><w>306</w><h>81</h></coordinates><panel_attributes>&lt;&lt;RPi_Client&gt;&gt;
+communiceert draadloos met</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>445</x><y>386</y><w>306</w><h>81</h></coordinates><panel_attributes>&lt;&lt;RPi_Client&gt;&gt;
 SocketClient
 --
 #stuur_bericht_naar_I2C(socket_dataframe: uint8_t[]): void
-#stuur_bericht_naar_socket(I2C_bericht: uint8_t[]): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>288</x><y>405</y><w>234</w><h>45</h></coordinates><panel_attributes>lt=&lt;-&gt;
+#stuur_bericht_naar_socket(I2C_bericht: uint8_t[]): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>229</x><y>431</y><w>234</w><h>45</h></coordinates><panel_attributes>lt=&lt;-&gt;
 m1=1
 m2=1
-TCP/IP Socket</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>513</x><y>180</y><w>252</w><h>72</h></coordinates><panel_attributes>&lt;&lt;Microcontroller&gt;&gt;
+TCP/IP Socket</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>454</x><y>206</y><w>252</w><h>72</h></coordinates><panel_attributes>&lt;&lt;Microcontroller&gt;&gt;
 STM_Board
 --
 #stuur_sensor_data(): void
-#stuur_actuator_aan(I2C_bericht: uint8_t): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>243</y><w>63</w><h>135</h></coordinates><panel_attributes>lt=&lt;-
+#stuur_actuator_aan(I2C_bericht: uint8_t): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>571</x><y>269</y><w>63</w><h>135</h></coordinates><panel_attributes>lt=&lt;-
 m1=3
 m2=1
 I2C bus</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element></diagram>

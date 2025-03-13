@@ -9,9 +9,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     ui.setupUi(this); 
     
     // connect functions to buttons
-    QPushButton* lampen_keuken = findChild<QPushButton*>("lampen_keuken");
-    if (lampen_keuken) {
-        connect(lampen_keuken, &QPushButton::clicked, this, &MainWindow::button_lampen_keuken_clicked);
+    QPushButton* keukenLampenKnop = findChild<QPushButton*>("keukenLampenKnop");
+    if (keukenLampenKnop) {
+        connect(keukenLampenKnop, &QPushButton::clicked, this, &MainWindow::button_lampen_keuken_clicked);
     }
 }
 
@@ -27,4 +27,22 @@ void MainWindow::button_lampen_keuken_clicked() {
         &data,
         1 // data size 
     );
+}
+
+void MainWindow::updateCO2Value(float value) {
+    if (ui.co2ValueIndicator) {
+        ui.co2ValueIndicator->display(value);
+    }
+}
+
+void MainWindow::updateTemperatureValue(float value) {
+    if (ui.tempValueIndicator) {
+        ui.tempValueIndicator->display(value);
+    }
+}
+
+void MainWindow::updateHumidityValue(float value) {
+    if (ui.humidityValueIndicator) {
+        ui.humidityValueIndicator->display(value);
+    }
 }

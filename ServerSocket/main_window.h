@@ -17,6 +17,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void updateCO2Value(float value);
+    void updateHumidityValue(float value);
+    void updateTemperatureValue(float value);
+
 private slots:
     void button_lampen_keuken_clicked();
 
