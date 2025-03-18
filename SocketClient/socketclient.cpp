@@ -10,6 +10,7 @@
 
 #include "socketclient.h"
 #include "globals.h"
+#include "I2Cclient.h"
 
 using namespace std;
 
@@ -71,7 +72,7 @@ int receive_data() {
     }
 }
 
-int send_data() {
+int send_testData() {
     while(1) {
         
         // CO2 sensor
@@ -117,6 +118,49 @@ int send_data() {
     }
 
     return 0;
+}
+
+// Take values from the I2C bus and translate them to socket messages
+// !TODO: implement timeslots if this is necessary, or other chrono polling logic
+int send_data() {
+    while(1) {
+        float co2_value = read_co2_data();
+        if(send_dataframe(
+            111, // messageID 
+            1, // vector size 1 
+            2,  // float
+            reinterpret_cast<uint8_t*>(&co2_value),
+            4 // 4 bytes for a float
+        )) {
+            cerr << "Could not send CO2 value to server!" << endl;
+            return 1;
+        }
+                // humidity sensor
+        float humidity_value = read_humidity_data();
+        if(send_dataframe(
+            112, // messageID 
+            1, // vector size 1 
+            2,  // float
+            reinterpret_cast<uint8_t*>(&humidity_value),
+            4 // 4 bytes for a float
+        )) {
+            cerr << "Could not send humidity value to server!" << endl;
+            return 1;
+        }
+
+        // temperature sensor
+        float temperature_value = read_temperature_data();
+        if(send_dataframe(
+            122, // messageID 
+            1, // vector size 1 
+            2,  // float
+            reinterpret_cast<uint8_t*>(&temperature_value),
+            4 // 4 bytes for a float
+        )) {
+            cerr << "Could not send temperature value to server!" << endl;
+            return 1;
+        }
+    }
 }
 
 int send_dataframe(

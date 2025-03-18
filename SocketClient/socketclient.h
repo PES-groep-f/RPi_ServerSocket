@@ -1,8 +1,6 @@
-#ifndef SOCKETCLIENT_H
-#define SOCKETCLIENT_H
-
 int receive_data();
-int send_data();
+int send_testData();
+int send_data(); 
 
 // sturen neppe berichten met generereerde waardes 
 void test_co2Sensor(); // stuurt waardes tussen 600.0 en 1100.0
@@ -15,5 +13,3 @@ int send_dataframe(
     uint8_t *data,
     uint datasize // <= 1022
 );
-
-#endif
