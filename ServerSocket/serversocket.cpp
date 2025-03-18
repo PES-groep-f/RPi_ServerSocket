@@ -8,6 +8,7 @@
 
 #include "globals.h"
 #include "main_window.h"
+#include "serversocket.h"
 
 using namespace std;
 
@@ -88,11 +89,14 @@ void receive_dataframe(uint8_t buffer[1024])
         }
 
         if (messageID == 111) {
-            updateCO2Value(data[0]);
+            lock_guard<mutex> lock(mainWindowMutex);
+            if (mainWindow) mainWindow->updateCO2Value(data[0]);
         } else if (messageID == 112) {
-            updateHumidityValue(data[0]);
+            lock_guard<mutex> lock(mainWindowMutex);
+            if (mainWindow) mainWindow->updateHumidityValue(data[0]);
         } else if (messageID == 122) {
-            updateTemperatureValue(data[0]);
+            lock_guard<mutex> lock(mainWindowMutex);
+            if (mainWindow) mainWindow->updateTemperatureValue(data[0]);
         }
     }
     else if (vectorDataType == 3)

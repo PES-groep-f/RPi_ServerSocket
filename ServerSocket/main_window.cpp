@@ -42,7 +42,7 @@ void MainWindow::updateTemperatureValue(float value) {
 }
 
 void MainWindow::updateHumidityValue(float value) {
-    if (ui.humidityValueIndicator) {
-        ui.humidityValueIndicator->display(value);
+    if (ui.luchtValueIndicator) {
+        ui.luchtValueIndicator->display(value);
     }
 }

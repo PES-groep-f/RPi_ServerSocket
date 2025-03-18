@@ -17,10 +17,12 @@ using namespace std;
 int runQT(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    MainWindow mainWindow;
-    mainWindow.show();
+    mainWindow = new MainWindow;
+    mainWindow->show();
 
-    return app.exec();
+    int res = app.exec();
+    delete mainWindow;
+    return res;
 }
 
 int main(int argc, char *argv[]) {
