@@ -98,12 +98,40 @@ void MainWindow::slider_lampen_rgb_2_released() {
 void MainWindow::updateCO2Value(float value) {
     if (ui.co2ValueIndicator) {
         ui.co2ValueIndicator->display(value);
+
+        if (grenswaardeCO2Overschreden && (value <= 900)) { // reset
+            QPalette palette = ui.co2ValueIndicator->palette();
+            palette.setColor(palette.WindowText, Qt::black);            
+            ui.co2ValueIndicator->setPalette(palette);
+            updateVentilator(false);
+        }
+        grenswaardeCO2Overschreden = (value > 900);
+        if (grenswaardeCO2Overschreden) {
+            QPalette palette = ui.co2ValueIndicator->palette();
+            palette.setColor(palette.WindowText, Qt::red);
+            ui.co2ValueIndicator->setPalette(palette);
+            updateVentilator(true);
+        }
     }
 }
 
 void MainWindow::updateTemperatureValue(float value) {
     if (ui.tempValueIndicator) {
         ui.tempValueIndicator->display(value);
+
+        if (grenswaardeTemperatureOverschreden && value <= 40) { // reset
+            QPalette palette = ui.tempValueIndicator->palette();
+            palette.setColor(palette.WindowText, Qt::black); 
+            ui.co2ValueIndicator->setPalette(palette);
+            updateVentilator(false);
+        }
+        grenswaardeTemperatureOverschreden = (value > 40);
+        if (grenswaardeTemperatureOverschreden) {
+            QPalette palette = ui.tempValueIndicator->palette();
+            palette.setColor(palette.WindowText, Qt::red);
+            ui.co2ValueIndicator->setPalette(palette);
+            updateVentilator(true);
+        }
     }
 }
 
@@ -120,14 +148,14 @@ void MainWindow::updateDrukknop1(bool value) {
 }
 
 void MainWindow::updateDrukknop2(bool value) {
-    if (ui.testKnopTafel1) {
-        ui.testKnopTafel1->setPower(value);
+    if (ui.testKnopTafel2) {
+        ui.testKnopTafel2->setPower(value);
     }
 }
 
 void MainWindow::updateDrukknop3(bool value) {
-    if (ui.testKnopTafel1) {
-        ui.testKnopTafel1->setPower(value);
+    if (ui.testKnopTafel3) {
+        ui.testKnopTafel3->setPower(value);
     }
 }
 
