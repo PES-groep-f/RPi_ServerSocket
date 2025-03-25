@@ -21,9 +21,16 @@ public slots:
     void updateCO2Value(float value);
     void updateHumidityValue(float value);
     void updateTemperatureValue(float value);
+    void updateDrukknop1(bool value);
+    void updateDrukknop2(bool value);
+    void updateDrukknop3(bool value);
+    void updateVentilator(bool value);
 
 private slots:
     void button_lampen_keuken_clicked();
+    void button_ventilator_clicked();
+    void slider_lampen_rgb_1_released();
+    void slider_lampen_rgb_2_released();
 
 private:
     Ui::MainWindow ui;

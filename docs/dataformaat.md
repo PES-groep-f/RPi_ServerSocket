@@ -14,6 +14,7 @@ Data | Variabel |
 - 2: float (4 bytes)
 - 3: boolean (1 byte)
 - 4: ASCII string, null terminated (variabele lengte)
+- 5: uint8 (1 byte)
 
 *Noot: als het gaat om een ASCII string is de vector lengte altijd 1.*
 
@@ -23,7 +24,7 @@ De kleur geel (voor RGB lampen):
 
 Message ID | Vector Length | Datatype | Data
 |-|-|-|-|
-27   | 3 | 0=uint32 | 255 213 0
+27   | 3 | 5=uint8 | 255 213 0
 
 Luchtvochtigheid
 
