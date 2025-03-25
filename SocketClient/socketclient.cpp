@@ -96,6 +96,7 @@ int send_testData() {
             cerr << "Could not send CO2 value to server!" << endl;
             return 1;
         }
+        this_thread::sleep_for(chrono::seconds(1));
 
         // humidity sensor
         float humidity_value = 30.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (50.0 - 30.0)));
@@ -109,6 +110,7 @@ int send_testData() {
             cerr << "Could not send humidity value to server!" << endl;
             return 1;
         }
+        this_thread::sleep_for(chrono::seconds(1));
 
         // temperature sensor
         float temperature_value = 19.5 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (23.0 - 19.5)));
@@ -123,7 +125,7 @@ int send_testData() {
             return 1;
         }
 
-        this_thread::sleep_for(chrono::seconds(3));
+        this_thread::sleep_for(chrono::seconds(1));
     }
 
     return 0;
