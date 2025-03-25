@@ -66,8 +66,17 @@ int receive_data() {
                 char data[1024];
                 memcpy(data, dataPtr, 1024);
                 cout << "Data " << ": " << data << endl;
+            } else if (vectorDataType == 5) { // uint8
+                uint8_t data[vectorLength];
+                memcpy(data, dataPtr, sizeof(uint8_t) * vectorLength);
+                
+                cout << "Data : ";
+                for (size_t i = 0; i < vectorLength; ++i)
+                {
+                    cout << bitset<8>(data[i]) << " ";
+                }
+                cout << endl;
             }
-            return 0;
         }
     }
 }
@@ -114,7 +123,7 @@ int send_testData() {
             return 1;
         }
 
-        this_thread::sleep_for(chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(3));
     }
 
     return 0;
