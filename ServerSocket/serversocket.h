@@ -8,7 +8,7 @@ using namespace std;
 
 int setup();
 
-int handleClient(int clientSocket, char ip_address[]);
+void handleClient(int clientSocket, char ip_address[]);
 int send_dataframe(
     string ip_address, 
     uint8_t messageID,
@@ -17,5 +17,7 @@ int send_dataframe(
     uint8_t* data, 
     uint datasize // <= 1022
 );
+
+void receive_dataframe(uint8_t buffer[1024]);
 
 #endif

@@ -8,6 +8,7 @@
 
 #include "globals.h"
 #include "main_window.h"
+#include "serversocket.h"
 
 using namespace std;
 
@@ -55,6 +56,8 @@ void receive_dataframe(uint8_t buffer[1024])
     cout << "Received message with ID: " << (int)messageID << endl;
     cout << "Vector Length: " << (int)vectorLength << ", Data Type: " << (int)vectorDataType << endl;
 
+    lock_guard<mutex> lock(mainWindowMutex);
+
     // Depending on the vector data type, we process the data
     uint8_t *dataPtr = buffer + 2; // The data starts after the first two bytes
     if (vectorDataType == 0)
@@ -88,11 +91,11 @@ void receive_dataframe(uint8_t buffer[1024])
         }
 
         if (messageID == 111) {
-            updateCO2Value(data[0]);
+            mainWindow->updateCO2Value(data[0]);
         } else if (messageID == 112) {
-            updateHumidityValue(data[0]);
+            mainWindow->updateHumidityValue(data[0]);
         } else if (messageID == 122) {
-            updateTemperatureValue(data[0]);
+            mainWindow->updateTemperatureValue(data[0]);
         }
     }
     else if (vectorDataType == 3)

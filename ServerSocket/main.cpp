@@ -8,7 +8,6 @@
 #include <mutex> 
 #include <QApplication>
 
-#include "main_window.h"
 #include "serversocket.h"
 #include "globals.h"
 
@@ -17,8 +16,8 @@ using namespace std;
 int runQT(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    MainWindow mainWindow;
-    mainWindow.show();
+    mainWindow = new MainWindow();
+    mainWindow->show();
 
     return app.exec();
 }

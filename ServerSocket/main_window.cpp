@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     if (keukenLampenKnop) {
         connect(keukenLampenKnop, &QPushButton::clicked, this, &MainWindow::button_lampen_keuken_clicked);
     }
+
+
 }
 
 MainWindow::~MainWindow() {}
@@ -42,7 +44,7 @@ void MainWindow::updateTemperatureValue(float value) {
 }
 
 void MainWindow::updateHumidityValue(float value) {
-    if (ui.humidityValueIndicator) {
-        ui.humidityValueIndicator->display(value);
+    if (ui.luchtValueIndicator) {
+        ui.luchtValueIndicator->display(value);
     }
 }

@@ -3,3 +3,5 @@
 unordered_map<string, int> clientMap;
 mutex clientMapMutex;
 string raspberryClientIP = "127.0.0.1";
+MainWindow* mainWindow = nullptr;
+mutex mainWindowMutex;
