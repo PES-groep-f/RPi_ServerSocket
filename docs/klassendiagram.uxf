@@ -74,5 +74,5 @@ m2=1
 Onderdeel Controlle</panel_attributes><additional_attributes>270;120;270;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>108</x><y>639</y><w>144</w><h>99</h></coordinates><panel_attributes>lt=&lt;-&gt;
 m1=1
 m2=1
-Sturen/onvangen Data
+Sturen/ontvangen Data
 </panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element></diagram>
