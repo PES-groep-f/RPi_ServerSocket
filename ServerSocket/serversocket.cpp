@@ -46,74 +46,88 @@ void handleClient(int clientSocket, char ip_address[])
     clientMap.erase(s);
 }
 
-void receive_dataframe(uint8_t buffer[1024])
-{
-    uint8_t messageID = buffer[0];                   // Message ID (1 byte)
-    uint8_t vectorMeta = buffer[1];                  // Vector metadata (1 byte)
-    uint8_t vectorLength = (vectorMeta >> 4) & 0x0F; // Get the 4 high bits for vector length
-    uint8_t vectorDataType = vectorMeta & 0x0F;      // Get the 4 low bits for vector data type
+// Function to process received dataframes
+void receive_dataframe(uint8_t buffer[1024]) {
+    uint8_t messageID = buffer[0];
+    uint8_t vectorMeta = buffer[1];
+    uint8_t vectorLength = (vectorMeta >> 4) & 0x0F;
+    uint8_t vectorDataType = vectorMeta & 0x0F;
 
-    cout << "Received message with ID: " << (int)messageID << endl;
-    cout << "Vector Length: " << (int)vectorLength << ", Data Type: " << (int)vectorDataType << endl;
+    cout << "Received message: ID=" << (int)messageID
+         << ", Vector Length=" << (int)vectorLength
+         << ", Data Type=" << (int)vectorDataType << endl;
 
-    lock_guard<mutex> lock(mainWindowMutex);
+    const uint8_t* dataPtr = buffer + 2; // Data starts after the first two bytes
 
-    // Depending on the vector data type, we process the data
-    uint8_t *dataPtr = buffer + 2; // The data starts after the first two bytes
-    if (vectorDataType == 0)
-    { // uint32
-        uint32_t data[vectorLength];
-        memcpy(data, dataPtr, sizeof(uint32_t) * vectorLength);
-
-        for (int i = 0; i < vectorLength; ++i)
-        {
-            cout << "Data " << i << ": " << data[i] << endl;
+    switch (vectorDataType) {
+        case 0: { // uint32_t
+            uint32_t data[vectorLength];
+            memcpy(data, dataPtr, vectorLength * sizeof(uint32_t));
+            for (int i = 0; i < vectorLength; ++i) {
+                cout << "Data[" << i << "]: " << data[i] << endl;
+            }
+            break;
         }
-    }
-    else if (vectorDataType == 1)
-    { // int32
-        int32_t data[vectorLength];
-        memcpy(data, dataPtr, sizeof(int32_t) * vectorLength);
-
-        for (int i = 0; i < vectorLength; ++i)
-        {
-            cout << "Data " << i << ": " << data[i] << endl;
+        case 1: { // int32_t
+            int32_t data[vectorLength];
+            memcpy(data, dataPtr, vectorLength * sizeof(int32_t));
+            for (int i = 0; i < vectorLength; ++i) {
+                cout << "Data[" << i << "]: " << data[i] << endl;
+            }
+            break;
         }
-    }
-    else if (vectorDataType == 2)
-    { // float
-        float data[vectorLength];
-        memcpy(data, dataPtr, sizeof(float) * vectorLength);
+        case 2: { // float
+            float data[vectorLength];
+            memcpy(data, dataPtr, vectorLength * sizeof(float));
+            for (int i = 0; i < vectorLength; ++i) {
+                cout << "Data[" << i << "]: " << data[i] << endl;
+            }
 
-        for (int i = 0; i < vectorLength; ++i)
-        {
-            cout << "Data " << i << ": " << data[i] << endl;
+            lock_guard<mutex> lock(mainWindowMutex);
+            if (mainWindow) {
+                switch (messageID) {
+                    case 111: mainWindow->updateCO2Value(data[0]); break;
+                    case 112: mainWindow->updateHumidityValue(data[0]); break;
+                    case 122: mainWindow->updateTemperatureValue(data[0]); break;
+                }
+            }
+            break;
         }
+        case 3: { // boolean
+            bool data[vectorLength];
+            memcpy(data, dataPtr, vectorLength * sizeof(bool));
+            for (int i = 0; i < vectorLength; ++i) {
+                cout << "Data[" << i << "]: " << data[i] << endl;
+            }
 
+<<<<<<< HEAD
         if (messageID == 111) {
             mainWindow->updateCO2Value(data[0]);
         } else if (messageID == 112) {
             mainWindow->updateHumidityValue(data[0]);
         } else if (messageID == 122) {
             mainWindow->updateTemperatureValue(data[0]);
+=======
+            lock_guard<mutex> lock(mainWindowMutex);
+            if (mainWindow) {
+                switch (messageID) {
+                    case 1: mainWindow->updateDrukknop1(data[0]); break;
+                    case 2: mainWindow->updateDrukknop2(data[0]); break;
+                    case 3: mainWindow->updateDrukknop3(data[0]); break;
+                    case 113: mainWindow->updateVentilator(data[0]); break;
+                }
+            }
+            break;
+>>>>>>> b21df0a5d07d7aa6fa67aa3e53a42e1b132ed18c
         }
-    }
-    else if (vectorDataType == 3)
-    { // boolean
-        bool data[vectorLength];
-        memcpy(data, dataPtr, sizeof(bool) * vectorLength);
-
-        for (int i = 0; i < vectorLength; ++i)
-        {
-            cout << "Data " << i << ": " << data[i] << endl;
+        case 4: { // ASCII string
+            char data[1024] = {0};
+            strncpy(data, reinterpret_cast<const char*>(dataPtr), sizeof(data) - 1);
+            cout << "String Data: " << data << endl;
+            break;
         }
-    }
-    else if (vectorDataType == 4)
-    { // ASCII null-terminated string
-        char data[1024];
-        memcpy(data, dataPtr, 1024);
-
-        cout << "Data " << ": " << data << endl;
+        default:
+            cerr << "Unknown data type: " << (int)vectorDataType << endl;
     }
 }
 

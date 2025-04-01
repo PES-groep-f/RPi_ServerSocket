@@ -17,6 +17,7 @@ int send_dataframe(
     uint8_t* data, 
     uint datasize // <= 1022
 );
+void receive_dataframe(uint8_t buffer[1024]);
 
 void receive_dataframe(uint8_t buffer[1024]);
 

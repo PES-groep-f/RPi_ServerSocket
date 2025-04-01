@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
@@ -23,11 +22,11 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "statusled.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -44,28 +43,24 @@ public:
     QPushButton *keukenDeurenKnop;
     QPushButton *restaurantDeurenKnop;
     QHBoxLayout *RGBLayout;
-    QSplitter *RGBSpacer;
-    QWidget *layoutWidget_2;
-    QVBoxLayout *bovenkantRGBLayout;
-    QComboBox *RGBLampSelectie;
-    QGridLayout *valueRGBLayout;
-    QLabel *redLabel;
-    QLabel *greenLabel;
-    QLabel *blueLabel;
-    QLCDNumber *redValueIndicator;
-    QLCDNumber *greenValueIndicator;
-    QLCDNumber *blueValueIndicator;
-    QWidget *layoutWidget_3;
-    QHBoxLayout *sliderLayout;
-    QSlider *redValueSlider;
-    QSpacerItem *horizontalSpacer;
-    QSlider *greenValueSlider;
-    QSpacerItem *horizontalSpacer_2;
-    QSlider *blueValueSlider;
+    QGridLayout *sliderGrid;
+    QLabel *REDLabel;
+    QSlider *lamp1BLUE;
+    QSlider *lamp1GREEN;
+    QSlider *lamp1RED;
+    QLabel *GREENLabel;
+    QLabel *BLUELabel;
+    QSpacerItem *SliderSpacer2;
+    QSpacerItem *sliderSpacer1;
+    QSlider *lamp2RED;
+    QSlider *lamp2GREEN;
+    QSlider *lamp2BLUE;
+    QLabel *lamp1Label;
+    QLabel *lamp2Label;
     QVBoxLayout *testKnoppenLayout;
-    QPushButton *testKnopTafel1;
-    QPushButton *testKnopTafel2;
-    QPushButton *testKnopTafel3;
+    StatusLed *testKnopTafel1;
+    StatusLed *testKnopTafel2;
+    StatusLed *testKnopTafel3;
     QVBoxLayout *onderkantLayout;
     QFrame *line;
     QHBoxLayout *labelLayout;
@@ -124,6 +119,7 @@ public:
         knoppenLayout->addWidget(keukenLampenKnop, 0, 0, 1, 1);
 
         ventilatorKnop = new QPushButton(layoutWidget);
+        ventilatorKnop->setCheckable(true);
         ventilatorKnop->setObjectName(QString::fromUtf8("ventilatorKnop"));
         sizePolicy2.setHeightForWidth(ventilatorKnop->sizePolicy().hasHeightForWidth());
         ventilatorKnop->setSizePolicy(sizePolicy2);
@@ -150,158 +146,119 @@ public:
         RGBLayout = new QHBoxLayout();
         RGBLayout->setSpacing(0);
         RGBLayout->setObjectName(QString::fromUtf8("RGBLayout"));
-        RGBSpacer = new QSplitter(layoutWidget);
-        RGBSpacer->setObjectName(QString::fromUtf8("RGBSpacer"));
-        RGBSpacer->setOrientation(Qt::Vertical);
-        layoutWidget_2 = new QWidget(RGBSpacer);
-        layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
-        bovenkantRGBLayout = new QVBoxLayout(layoutWidget_2);
-        bovenkantRGBLayout->setSpacing(0);
-        bovenkantRGBLayout->setObjectName(QString::fromUtf8("bovenkantRGBLayout"));
-        bovenkantRGBLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
-        bovenkantRGBLayout->setContentsMargins(0, 0, 0, 0);
-        RGBLampSelectie = new QComboBox(layoutWidget_2);
-        RGBLampSelectie->addItem(QString());
-        RGBLampSelectie->addItem(QString());
-        RGBLampSelectie->addItem(QString());
-        RGBLampSelectie->setObjectName(QString::fromUtf8("RGBLampSelectie"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sliderGrid = new QGridLayout();
+        sliderGrid->setObjectName(QString::fromUtf8("sliderGrid"));
+        REDLabel = new QLabel(layoutWidget);
+        REDLabel->setObjectName(QString::fromUtf8("REDLabel"));
+
+        sliderGrid->addWidget(REDLabel, 0, 1, 1, 1);
+
+        lamp1BLUE = new QSlider(layoutWidget);
+        lamp1BLUE->setObjectName(QString::fromUtf8("lamp1BLUE"));
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(RGBLampSelectie->sizePolicy().hasHeightForWidth());
-        RGBLampSelectie->setSizePolicy(sizePolicy3);
-        RGBLampSelectie->setLayoutDirection(Qt::LeftToRight);
-        RGBLampSelectie->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
+        sizePolicy3.setHeightForWidth(lamp1BLUE->sizePolicy().hasHeightForWidth());
+        lamp1BLUE->setSizePolicy(sizePolicy3);
+        lamp1BLUE->setMaximum(255);
+        lamp1BLUE->setOrientation(Qt::Vertical);
 
-        bovenkantRGBLayout->addWidget(RGBLampSelectie);
+        sliderGrid->addWidget(lamp1BLUE, 1, 5, 1, 1);
 
-        valueRGBLayout = new QGridLayout();
-        valueRGBLayout->setSpacing(0);
-        valueRGBLayout->setObjectName(QString::fromUtf8("valueRGBLayout"));
-        redLabel = new QLabel(layoutWidget_2);
-        redLabel->setObjectName(QString::fromUtf8("redLabel"));
-        sizePolicy1.setHeightForWidth(redLabel->sizePolicy().hasHeightForWidth());
-        redLabel->setSizePolicy(sizePolicy1);
-        redLabel->setAlignment(Qt::AlignCenter);
+        lamp1GREEN = new QSlider(layoutWidget);
+        lamp1GREEN->setObjectName(QString::fromUtf8("lamp1GREEN"));
+        sizePolicy3.setHeightForWidth(lamp1GREEN->sizePolicy().hasHeightForWidth());
+        lamp1GREEN->setSizePolicy(sizePolicy3);
+        lamp1GREEN->setMaximum(255);
+        lamp1GREEN->setOrientation(Qt::Vertical);
 
-        valueRGBLayout->addWidget(redLabel, 0, 0, 1, 1);
+        sliderGrid->addWidget(lamp1GREEN, 1, 3, 1, 1);
 
-        greenLabel = new QLabel(layoutWidget_2);
-        greenLabel->setObjectName(QString::fromUtf8("greenLabel"));
-        sizePolicy.setHeightForWidth(greenLabel->sizePolicy().hasHeightForWidth());
-        greenLabel->setSizePolicy(sizePolicy);
-        greenLabel->setAlignment(Qt::AlignCenter);
+        lamp1RED = new QSlider(layoutWidget);
+        lamp1RED->setObjectName(QString::fromUtf8("lamp1RED"));
+        sizePolicy3.setHeightForWidth(lamp1RED->sizePolicy().hasHeightForWidth());
+        lamp1RED->setSizePolicy(sizePolicy3);
+        lamp1RED->setMaximum(255);
+        lamp1RED->setOrientation(Qt::Vertical);
 
-        valueRGBLayout->addWidget(greenLabel, 0, 1, 1, 1);
+        sliderGrid->addWidget(lamp1RED, 1, 1, 1, 1);
 
-        blueLabel = new QLabel(layoutWidget_2);
-        blueLabel->setObjectName(QString::fromUtf8("blueLabel"));
-        sizePolicy.setHeightForWidth(blueLabel->sizePolicy().hasHeightForWidth());
-        blueLabel->setSizePolicy(sizePolicy);
-        blueLabel->setAlignment(Qt::AlignCenter);
+        GREENLabel = new QLabel(layoutWidget);
+        GREENLabel->setObjectName(QString::fromUtf8("GREENLabel"));
 
-        valueRGBLayout->addWidget(blueLabel, 0, 2, 1, 1);
+        sliderGrid->addWidget(GREENLabel, 0, 3, 1, 1);
 
-        redValueIndicator = new QLCDNumber(layoutWidget_2);
-        redValueIndicator->setObjectName(QString::fromUtf8("redValueIndicator"));
-        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(redValueIndicator->sizePolicy().hasHeightForWidth());
-        redValueIndicator->setSizePolicy(sizePolicy4);
+        BLUELabel = new QLabel(layoutWidget);
+        BLUELabel->setObjectName(QString::fromUtf8("BLUELabel"));
 
-        valueRGBLayout->addWidget(redValueIndicator, 1, 0, 1, 1);
+        sliderGrid->addWidget(BLUELabel, 0, 5, 1, 1);
 
-        greenValueIndicator = new QLCDNumber(layoutWidget_2);
-        greenValueIndicator->setObjectName(QString::fromUtf8("greenValueIndicator"));
-        QSizePolicy sizePolicy5(QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(greenValueIndicator->sizePolicy().hasHeightForWidth());
-        greenValueIndicator->setSizePolicy(sizePolicy5);
-        greenValueIndicator->setLayoutDirection(Qt::LeftToRight);
-        greenValueIndicator->setDigitCount(5);
-        greenValueIndicator->setSegmentStyle(QLCDNumber::Filled);
+        SliderSpacer2 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-        valueRGBLayout->addWidget(greenValueIndicator, 1, 1, 1, 1);
+        sliderGrid->addItem(SliderSpacer2, 1, 4, 3, 1);
 
-        blueValueIndicator = new QLCDNumber(layoutWidget_2);
-        blueValueIndicator->setObjectName(QString::fromUtf8("blueValueIndicator"));
-        sizePolicy4.setHeightForWidth(blueValueIndicator->sizePolicy().hasHeightForWidth());
-        blueValueIndicator->setSizePolicy(sizePolicy4);
+        sliderSpacer1 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-        valueRGBLayout->addWidget(blueValueIndicator, 1, 2, 1, 1);
+        sliderGrid->addItem(sliderSpacer1, 1, 2, 3, 1);
+
+        lamp2RED = new QSlider(layoutWidget);
+        lamp2RED->setObjectName(QString::fromUtf8("lamp2RED"));
+        sizePolicy3.setHeightForWidth(lamp2RED->sizePolicy().hasHeightForWidth());
+        lamp2RED->setSizePolicy(sizePolicy3);
+        lamp2RED->setMaximum(255);
+        lamp2RED->setOrientation(Qt::Vertical);
+
+        sliderGrid->addWidget(lamp2RED, 2, 1, 1, 1);
+
+        lamp2GREEN = new QSlider(layoutWidget);
+        lamp2GREEN->setObjectName(QString::fromUtf8("lamp2GREEN"));
+        sizePolicy3.setHeightForWidth(lamp2GREEN->sizePolicy().hasHeightForWidth());
+        lamp2GREEN->setSizePolicy(sizePolicy3);
+        lamp2GREEN->setMaximum(255);
+        lamp2GREEN->setOrientation(Qt::Vertical);
+
+        sliderGrid->addWidget(lamp2GREEN, 2, 3, 1, 1);
+
+        lamp2BLUE = new QSlider(layoutWidget);
+        lamp2BLUE->setObjectName(QString::fromUtf8("lamp2BLUE"));
+        sizePolicy3.setHeightForWidth(lamp2BLUE->sizePolicy().hasHeightForWidth());
+        lamp2BLUE->setSizePolicy(sizePolicy3);
+        lamp2BLUE->setMaximum(255);
+        lamp2BLUE->setOrientation(Qt::Vertical);
+
+        sliderGrid->addWidget(lamp2BLUE, 2, 5, 1, 1);
+
+        lamp1Label = new QLabel(layoutWidget);
+        lamp1Label->setObjectName(QString::fromUtf8("lamp1Label"));
+
+        sliderGrid->addWidget(lamp1Label, 1, 0, 1, 1);
+
+        lamp2Label = new QLabel(layoutWidget);
+        lamp2Label->setObjectName(QString::fromUtf8("lamp2Label"));
+
+        sliderGrid->addWidget(lamp2Label, 2, 0, 1, 1);
 
 
-        bovenkantRGBLayout->addLayout(valueRGBLayout);
-
-        RGBSpacer->addWidget(layoutWidget_2);
-        layoutWidget_3 = new QWidget(RGBSpacer);
-        layoutWidget_3->setObjectName(QString::fromUtf8("layoutWidget_3"));
-        sliderLayout = new QHBoxLayout(layoutWidget_3);
-        sliderLayout->setSpacing(0);
-        sliderLayout->setObjectName(QString::fromUtf8("sliderLayout"));
-        sliderLayout->setContentsMargins(0, 0, 0, 0);
-        redValueSlider = new QSlider(layoutWidget_3);
-        redValueSlider->setObjectName(QString::fromUtf8("redValueSlider"));
-        QSizePolicy sizePolicy6(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(redValueSlider->sizePolicy().hasHeightForWidth());
-        redValueSlider->setSizePolicy(sizePolicy6);
-        redValueSlider->setMaximum(255);
-        redValueSlider->setOrientation(Qt::Vertical);
-
-        sliderLayout->addWidget(redValueSlider);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        sliderLayout->addItem(horizontalSpacer);
-
-        greenValueSlider = new QSlider(layoutWidget_3);
-        greenValueSlider->setObjectName(QString::fromUtf8("greenValueSlider"));
-        sizePolicy6.setHeightForWidth(greenValueSlider->sizePolicy().hasHeightForWidth());
-        greenValueSlider->setSizePolicy(sizePolicy6);
-        greenValueSlider->setMaximum(255);
-        greenValueSlider->setOrientation(Qt::Vertical);
-
-        sliderLayout->addWidget(greenValueSlider);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        sliderLayout->addItem(horizontalSpacer_2);
-
-        blueValueSlider = new QSlider(layoutWidget_3);
-        blueValueSlider->setObjectName(QString::fromUtf8("blueValueSlider"));
-        sizePolicy6.setHeightForWidth(blueValueSlider->sizePolicy().hasHeightForWidth());
-        blueValueSlider->setSizePolicy(sizePolicy6);
-        blueValueSlider->setMaximum(255);
-        blueValueSlider->setOrientation(Qt::Vertical);
-
-        sliderLayout->addWidget(blueValueSlider);
-
-        RGBSpacer->addWidget(layoutWidget_3);
-
-        RGBLayout->addWidget(RGBSpacer);
+        RGBLayout->addLayout(sliderGrid);
 
         testKnoppenLayout = new QVBoxLayout();
         testKnoppenLayout->setSpacing(0);
         testKnoppenLayout->setObjectName(QString::fromUtf8("testKnoppenLayout"));
-        testKnopTafel1 = new QPushButton(layoutWidget);
+        testKnopTafel1 = new StatusLed(layoutWidget);
         testKnopTafel1->setObjectName(QString::fromUtf8("testKnopTafel1"));
         sizePolicy2.setHeightForWidth(testKnopTafel1->sizePolicy().hasHeightForWidth());
         testKnopTafel1->setSizePolicy(sizePolicy2);
 
         testKnoppenLayout->addWidget(testKnopTafel1);
 
-        testKnopTafel2 = new QPushButton(layoutWidget);
+        testKnopTafel2 = new StatusLed(layoutWidget);
         testKnopTafel2->setObjectName(QString::fromUtf8("testKnopTafel2"));
         sizePolicy2.setHeightForWidth(testKnopTafel2->sizePolicy().hasHeightForWidth());
         testKnopTafel2->setSizePolicy(sizePolicy2);
 
         testKnoppenLayout->addWidget(testKnopTafel2);
 
-        testKnopTafel3 = new QPushButton(layoutWidget);
+        testKnopTafel3 = new StatusLed(layoutWidget);
         testKnopTafel3->setObjectName(QString::fromUtf8("testKnopTafel3"));
         sizePolicy2.setHeightForWidth(testKnopTafel3->sizePolicy().hasHeightForWidth());
         testKnopTafel3->setSizePolicy(sizePolicy2);
@@ -322,8 +279,11 @@ public:
         onderkantLayout->setObjectName(QString::fromUtf8("onderkantLayout"));
         line = new QFrame(layoutWidget);
         line->setObjectName(QString::fromUtf8("line"));
-        sizePolicy5.setHeightForWidth(line->sizePolicy().hasHeightForWidth());
-        line->setSizePolicy(sizePolicy5);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(line->sizePolicy().hasHeightForWidth());
+        line->setSizePolicy(sizePolicy4);
         line->setLineWidth(15);
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
@@ -372,25 +332,25 @@ public:
         valueIndicatorLayout->setObjectName(QString::fromUtf8("valueIndicatorLayout"));
         co2ValueIndicator = new QLCDNumber(layoutWidget);
         co2ValueIndicator->setObjectName(QString::fromUtf8("co2ValueIndicator"));
-        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(co2ValueIndicator->sizePolicy().hasHeightForWidth());
-        co2ValueIndicator->setSizePolicy(sizePolicy7);
+        QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(co2ValueIndicator->sizePolicy().hasHeightForWidth());
+        co2ValueIndicator->setSizePolicy(sizePolicy5);
 
         valueIndicatorLayout->addWidget(co2ValueIndicator);
 
         tempValueIndicator = new QLCDNumber(layoutWidget);
         tempValueIndicator->setObjectName(QString::fromUtf8("tempValueIndicator"));
-        sizePolicy7.setHeightForWidth(tempValueIndicator->sizePolicy().hasHeightForWidth());
-        tempValueIndicator->setSizePolicy(sizePolicy7);
+        sizePolicy5.setHeightForWidth(tempValueIndicator->sizePolicy().hasHeightForWidth());
+        tempValueIndicator->setSizePolicy(sizePolicy5);
 
         valueIndicatorLayout->addWidget(tempValueIndicator);
 
         luchtValueIndicator = new QLCDNumber(layoutWidget);
         luchtValueIndicator->setObjectName(QString::fromUtf8("luchtValueIndicator"));
-        sizePolicy7.setHeightForWidth(luchtValueIndicator->sizePolicy().hasHeightForWidth());
-        luchtValueIndicator->setSizePolicy(sizePolicy7);
+        sizePolicy5.setHeightForWidth(luchtValueIndicator->sizePolicy().hasHeightForWidth());
+        luchtValueIndicator->setSizePolicy(sizePolicy5);
 
         valueIndicatorLayout->addWidget(luchtValueIndicator);
 
@@ -399,18 +359,18 @@ public:
         lichtkrantInputLayout->setObjectName(QString::fromUtf8("lichtkrantInputLayout"));
         lichtkrantInput = new QTextEdit(layoutWidget);
         lichtkrantInput->setObjectName(QString::fromUtf8("lichtkrantInput"));
-        sizePolicy7.setHeightForWidth(lichtkrantInput->sizePolicy().hasHeightForWidth());
-        lichtkrantInput->setSizePolicy(sizePolicy7);
+        sizePolicy5.setHeightForWidth(lichtkrantInput->sizePolicy().hasHeightForWidth());
+        lichtkrantInput->setSizePolicy(sizePolicy5);
 
         lichtkrantInputLayout->addWidget(lichtkrantInput);
 
         lichtkrantKnoppen = new QDialogButtonBox(layoutWidget);
         lichtkrantKnoppen->setObjectName(QString::fromUtf8("lichtkrantKnoppen"));
-        QSizePolicy sizePolicy8(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy8.setHorizontalStretch(0);
-        sizePolicy8.setVerticalStretch(0);
-        sizePolicy8.setHeightForWidth(lichtkrantKnoppen->sizePolicy().hasHeightForWidth());
-        lichtkrantKnoppen->setSizePolicy(sizePolicy8);
+        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(lichtkrantKnoppen->sizePolicy().hasHeightForWidth());
+        lichtkrantKnoppen->setSizePolicy(sizePolicy6);
         lichtkrantKnoppen->setLayoutDirection(Qt::RightToLeft);
         lichtkrantKnoppen->setOrientation(Qt::Horizontal);
         lichtkrantKnoppen->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Reset);
@@ -448,16 +408,14 @@ public:
         ventilatorKnop->setText(QCoreApplication::translate("MainWindow", "Ventilator Aan / Uit", nullptr));
         keukenDeurenKnop->setText(QCoreApplication::translate("MainWindow", "Deuren Keuken Open / Dicht", nullptr));
         restaurantDeurenKnop->setText(QCoreApplication::translate("MainWindow", "Deuren Restaurant Open / Dicht", nullptr));
-        RGBLampSelectie->setItemText(0, QCoreApplication::translate("MainWindow", "RGB Lamp 1", nullptr));
-        RGBLampSelectie->setItemText(1, QCoreApplication::translate("MainWindow", "RGB Lamp 2", nullptr));
-        RGBLampSelectie->setItemText(2, QCoreApplication::translate("MainWindow", "RGB Lamp 3", nullptr));
-
-        redLabel->setText(QCoreApplication::translate("MainWindow", "RED", nullptr));
-        greenLabel->setText(QCoreApplication::translate("MainWindow", "GREEN", nullptr));
-        blueLabel->setText(QCoreApplication::translate("MainWindow", "BLUE", nullptr));
-        testKnopTafel1->setText(QCoreApplication::translate("MainWindow", "Test Drukknop Tafel 1", nullptr));
-        testKnopTafel2->setText(QCoreApplication::translate("MainWindow", "Test Drukknop Tafel 2", nullptr));
-        testKnopTafel3->setText(QCoreApplication::translate("MainWindow", "Test Drukknop Tafel 3", nullptr));
+        REDLabel->setText(QCoreApplication::translate("MainWindow", "RED", nullptr));
+        GREENLabel->setText(QCoreApplication::translate("MainWindow", "GREEN", nullptr));
+        BLUELabel->setText(QCoreApplication::translate("MainWindow", "BLUE", nullptr));
+        lamp1Label->setText(QCoreApplication::translate("MainWindow", "Lamp1", nullptr));
+        lamp2Label->setText(QCoreApplication::translate("MainWindow", "Lamp2", nullptr));
+        testKnopTafel1->setText(QCoreApplication::translate("MainWindow", "Drukknop Tafel 1", nullptr));
+        testKnopTafel2->setText(QCoreApplication::translate("MainWindow", "Drukknop Tafel 2", nullptr));
+        testKnopTafel3->setText(QCoreApplication::translate("MainWindow", "Drukknop Tafel 3", nullptr));
         co2Label->setText(QCoreApplication::translate("MainWindow", "CO2 Gehalte", nullptr));
         tempLabel->setText(QCoreApplication::translate("MainWindow", "Temperatuur (\302\260C)", nullptr));
         luchtLabel->setText(QCoreApplication::translate("MainWindow", "Luchtvochtigheid", nullptr));

@@ -3,6 +3,8 @@ project(ServerSocket)
 set(CMAKE_AUTOMOC ON) 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_PREFIX_PATH "/home/pigroepg/QT/6.7.0/gcc_arm64")
+
 set(SOURCES
     main.cpp
     globals.cpp
@@ -12,12 +14,12 @@ set(SOURCES
 
 set(HEADERS
     globals.h
+    statusled.h
     bedieningspaneel.h
     serversocket.h
     main_window.h
 )
 
-set(Qt6_DIR "/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 add_executable(ServerSocket
