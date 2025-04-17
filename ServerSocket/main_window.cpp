@@ -31,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
         connect(gSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
         connect(bSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
     }
-
-
 }
 
 MainWindow::~MainWindow() {}
@@ -73,7 +71,7 @@ void MainWindow::slider_lampen_rgb_1_released() {
     data[1] = static_cast<uint8_t>(ui.lamp1GREEN->value()); //green
     data[2] = static_cast<uint8_t>(ui.lamp1BLUE->value()); //blue
     send_dataframe(
-        raspberryClientIP,
+        RGBLamp0IP,
         102, // message ID for rgb lamp 1
         3, // three values
         5, // uint8
@@ -88,7 +86,7 @@ void MainWindow::slider_lampen_rgb_2_released() {
     data[1] = static_cast<uint8_t>(ui.lamp2GREEN->value()); //green
     data[2] = static_cast<uint8_t>(ui.lamp2BLUE->value()); //blue
     send_dataframe(
-        raspberryClientIP,
+        RGBLamp1IP,
         103, // message ID for rgb lamp 2
         3, // three values 
         5, // uint8
@@ -144,20 +142,23 @@ void MainWindow::updateHumidityValue(float value) {
 }
 
 void MainWindow::updateDrukknop1(bool value) {
-    if (ui.testKnopTafel1) {
-        ui.testKnopTafel1->setPower(value);
+    if (ui.testKnopTafel1 && value) {
+        drukknop0_ingedrukt = !drukknop0_ingedrukt;
+        ui.testKnopTafel1->setPower(drukknop0_ingedrukt);
     }
 }
 
 void MainWindow::updateDrukknop2(bool value) {
-    if (ui.testKnopTafel2) {
-        ui.testKnopTafel2->setPower(value);
+    if (ui.testKnopTafel2 && value) {
+        drukknop1_ingedrukt = !drukknop1_ingedrukt;
+        ui.testKnopTafel2->setPower(drukknop1_ingedrukt);
     }
 }
 
 void MainWindow::updateDrukknop3(bool value) {
-    if (ui.testKnopTafel3) {
-        ui.testKnopTafel3->setPower(value);
+    if (ui.testKnopTafel3 && value) {
+        drukknop2_ingedrukt = !drukknop2_ingedrukt;
+        ui.testKnopTafel3->setPower(drukknop2_ingedrukt);
     }
 }
 

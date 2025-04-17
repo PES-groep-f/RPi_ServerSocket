@@ -34,7 +34,12 @@ private slots:
 
 private:
     Ui::MainWindow ui;
-
+    bool grenswaardeCO2Overschreden;
+    bool grenswaardeHumidityOverschreden;
+    bool grenswaardeTemperatureOverschreden;
+    bool drukknop0_ingedrukt = false;
+    bool drukknop1_ingedrukt = false;
+    bool drukknop2_ingedrukt = false;
 };
 
 #endif // MAIN_WINDOW_H
