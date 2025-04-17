@@ -9,11 +9,15 @@
 
 #include "globals.h"
 #include "socketclient.h"
+#include "I2Cclient.h"
 
 using namespace std;
 
 int main()
 {
+    if(setup_I2C()) {
+        return 1;
+    }
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 
     sockaddr_in serverAddress;
@@ -22,7 +26,7 @@ int main()
     inet_pton(AF_INET, "169.254.10.157", &serverAddress.sin_addr);
     
     if (connect(sock, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
-        perror("Connection failed");
+        perror("Connection with server failed");
         return 1;
     }
 
@@ -30,10 +34,12 @@ int main()
     clientSocket = sock;
 
     thread receiveThread(receive_data);
-    thread sendThread(send_data);
+    // thread sendThread(send_data);
+    // thread test_sendThread(send_testData);
 
     receiveThread.join();
-    sendThread.join();
+    // sendThread.join();
+    // test_sendThread.join();
 
     close(clientSocket);
 

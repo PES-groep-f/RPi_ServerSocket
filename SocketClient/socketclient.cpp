@@ -135,42 +135,47 @@ int send_testData() {
 // !TODO: implement timeslots if this is necessary, or other chrono polling logic
 int send_data() {
     while(1) {
-        float co2_value = read_co2_data();
-        if(send_dataframe(
-            111, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&co2_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send CO2 value to server!" << endl;
-            return 1;
-        }
-                // humidity sensor
-        float humidity_value = read_humidity_data();
-        if(send_dataframe(
-            112, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&humidity_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send humidity value to server!" << endl;
-            return 1;
-        }
+        // float co2_value = read_co2_data();
+        // if(send_dataframe(
+        //     111, // messageID 
+        //     1, // vector size 1 
+        //     2,  // float
+        //     reinterpret_cast<uint8_t*>(&co2_value),
+        //     4 // 4 bytes for a float
+        // )) {
+        //     cerr << "Could not send CO2 value to server!" << endl;
+        //     return 1;
+        // }
+        //         // humidity sensor
+        // float humidity_value = read_humidity_data();
+        // if(send_dataframe(
+        //     112, // messageID 
+        //     1, // vector size 1 
+        //     2,  // float
+        //     reinterpret_cast<uint8_t*>(&humidity_value),
+        //     4 // 4 bytes for a float
+        // )) {
+        //     cerr << "Could not send humidity value to server!" << endl;
+        //     return 1;
+        // }
 
         // temperature sensor
         float temperature_value = read_temperature_data();
-        if(send_dataframe(
-            122, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&temperature_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send temperature value to server!" << endl;
-            return 1;
+        if(temperature_value == -1) {
+            cerr << "Failed to read temperature data, not sending to server!" << endl;
+        } else {
+            if(send_dataframe(
+                122, // messageID 
+                1, // vector size 1 
+                2,  // float
+                reinterpret_cast<uint8_t*>(&temperature_value),
+                4 // 4 bytes for a float
+            )) {
+                cerr << "Could not send temperature value to server!" << endl;
+            }
         }
+
+        this_thread::sleep_for(chrono::seconds(1));
     }
 }
 
