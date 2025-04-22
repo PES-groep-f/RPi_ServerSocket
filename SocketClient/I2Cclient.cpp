@@ -12,34 +12,47 @@ float bytesToFloat(uint8_t* bytes) {
     return v;
 }
 
+short bytesToShort(uint8_t* bytes) {
+    short v;
+    memcpy(&v, bytes, sizeof(short));
+    return v;
+}
+
 int setup_I2C() {
     fd0 = wiringPiI2CSetup(STMboard0_adress);
-    // fd1 = wiringPiI2CSetup(STMboard1_adress);
+    fd1 = wiringPiI2CSetup(STMboard1_adress);
     // fd2 = wiringPiI2CSetup(STMboard2_adress);
     if (fd0 == -1) {
         cerr << "Failed to initialize I2C!" << endl;
         return 1;
     }
 
-    cout << "I2C Communication Established with STM boards: [" << fd0 << "]!" << endl;
+    cout << "I2C Communication established with STM boards!" << endl;
     return 0;
 }
 
-float read_co2_data() {
-    // return wiringPiI2CReadReg16(fd1, 0xFA); // up to change, depending on the actual register
-    return 0.0;
-}
 
-float read_temperature_data() {
-    uint8_t buffer[4];
-    int readBytes = wiringPiI2CRawRead(fd0, buffer, 4);
-    if(readBytes != 4) {
-        cerr << "Could not read temperature data!" << endl;
-        return -1.0;
+int read_temp_humidity_data(float* out) {
+    uint8_t buffer[8] = {};
+    int readBytes = wiringPiI2CRawRead(fd0, buffer, 8);
+    if(readBytes != 8) {
+        cerr << "Could not read temp/humidity data! (" << readBytes << " bytes read)" << endl;
+        return 1;
     }
-    return bytesToFloat(buffer);
+
+    out[0] = bytesToFloat(buffer);
+    out[1] = bytesToFloat(buffer + 4);
+    return 0;
 }
 
-float read_humidity_data() {
-    return 0.0;
+int read_co2_data(float* out) {
+    uint8_t buffer[2] = {};
+    int readBytes = wiringPiI2CRawRead(fd1, buffer, 2);
+    if(readBytes != 2) {
+        cerr << "Could not read co2 data! (" << readBytes << " bytes read)" << endl;
+        return 1;
+    }
+
+    out[2] = (float) bytesToShort(buffer);
+    return 0;
 }

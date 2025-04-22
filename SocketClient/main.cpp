@@ -34,11 +34,11 @@ int main()
     clientSocket = sock;
 
     thread receiveThread(receive_data);
-    // thread sendThread(send_data);
+    thread sendThread(send_data);
     // thread test_sendThread(send_testData);
 
     receiveThread.join();
-    // sendThread.join();
+    sendThread.join();
     // test_sendThread.join();
 
     close(clientSocket);

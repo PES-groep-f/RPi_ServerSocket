@@ -86,9 +86,7 @@ void receive_dataframe(uint8_t buffer[1024]) {
             lock_guard<mutex> lock(mainWindowMutex);
             if (mainWindow) {
                 switch (messageID) {
-                    case 111: mainWindow->updateCO2Value(data[0]); break;
-                    case 112: mainWindow->updateHumidityValue(data[0]); break;
-                    case 122: mainWindow->updateTemperatureValue(data[0]); break;
+                    case 122: mainWindow->updateEnvironmentValues(data[0], data[1], data[2]); break;
                 }
             }
             break;
@@ -100,14 +98,6 @@ void receive_dataframe(uint8_t buffer[1024]) {
                 cout << "Data[" << i << "]: " << data[i] << endl;
             }
 
-<<<<<<< HEAD
-        if (messageID == 111) {
-            mainWindow->updateCO2Value(data[0]);
-        } else if (messageID == 112) {
-            mainWindow->updateHumidityValue(data[0]);
-        } else if (messageID == 122) {
-            mainWindow->updateTemperatureValue(data[0]);
-=======
             lock_guard<mutex> lock(mainWindowMutex);
             if (mainWindow) {
                 switch (messageID) {
@@ -118,7 +108,6 @@ void receive_dataframe(uint8_t buffer[1024]) {
                 }
             }
             break;
->>>>>>> b21df0a5d07d7aa6fa67aa3e53a42e1b132ed18c
         }
         case 4: { // ASCII string
             char data[1024] = {0};

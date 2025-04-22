@@ -2,8 +2,7 @@
 #define I2CCLIENT_H
 
 int setup_I2C();
-float read_co2_data();
-float read_temperature_data();
-float read_humidity_data();
+int read_temp_humidity_data(float* out);
+int read_co2_data(float* out);
 
 #endif

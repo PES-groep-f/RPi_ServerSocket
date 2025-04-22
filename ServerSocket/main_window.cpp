@@ -95,17 +95,17 @@ void MainWindow::slider_lampen_rgb_2_released() {
     );
 }
 
-void MainWindow::updateCO2Value(float value) {
+void MainWindow::updateEnvironmentValues(float temperature, float humidity, float co2) {
     if (ui.co2ValueIndicator) {
-        ui.co2ValueIndicator->display(value);
+        ui.co2ValueIndicator->display(co2);
 
-        if (grenswaardeCO2Overschreden && (value <= 900)) { // reset
+        if (grenswaardeCO2Overschreden && (co2 <= 900)) { // reset
             QPalette palette = ui.co2ValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black);            
             ui.co2ValueIndicator->setPalette(palette);
             updateVentilator(false);
         }
-        grenswaardeCO2Overschreden = (value > 900);
+        grenswaardeCO2Overschreden = (co2 > 900);
         if (grenswaardeCO2Overschreden) {
             QPalette palette = ui.co2ValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::red);
@@ -113,19 +113,17 @@ void MainWindow::updateCO2Value(float value) {
             updateVentilator(true);
         }
     }
-}
 
-void MainWindow::updateTemperatureValue(float value) {
     if (ui.tempValueIndicator) {
-        ui.tempValueIndicator->display(value);
+        ui.tempValueIndicator->display(temperature);
 
-        if (grenswaardeTemperatureOverschreden && value <= 40) { // reset
+        if (grenswaardeTemperatureOverschreden && temperature <= 40) { // reset
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black); 
             ui.co2ValueIndicator->setPalette(palette);
             updateVentilator(false);
         }
-        grenswaardeTemperatureOverschreden = (value > 40);
+        grenswaardeTemperatureOverschreden = (temperature > 40);
         if (grenswaardeTemperatureOverschreden) {
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::red);
@@ -133,13 +131,12 @@ void MainWindow::updateTemperatureValue(float value) {
             updateVentilator(true);
         }
     }
-}
 
-void MainWindow::updateHumidityValue(float value) {
     if (ui.luchtValueIndicator) {
-        ui.luchtValueIndicator->display(value);
+        ui.luchtValueIndicator->display(humidity);
     }
 }
+
 
 void MainWindow::updateDrukknop1(bool value) {
     if (ui.testKnopTafel1 && value) {
