@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     if (keukenLampenKnop) connect(keukenLampenKnop, &QPushButton::clicked, this, &MainWindow::button_lampen_keuken_clicked);
     QPushButton* ventilatorKnop = findChild<QPushButton*>("ventilatorKnop");
     if (ventilatorKnop) connect(ventilatorKnop, &QPushButton::toggled, this, &MainWindow::button_ventilator_clicked);
+    QPushButton* keukenDeurenKnop = findChild<QPushButton*>("keukenDeurenKnop");
+    if (keukenDeurenKnop) connect(keukenDeurenKnop, &QPushButton::clicked, this, &MainWindow::button_deuren_keuken_clicked);
+    QPushButton* restaurantDeurenKnop = findChild<QPushButton*>("restaurantDeurenKnop");
+    if (restaurantDeurenKnop) connect(restaurantDeurenKnop, &QPushButton::clicked, this, &MainWindow::button_deuren_restaurant_clicked);
 
     // connect RGB sliders to functions
     QSlider* rSlider1 = findChild<QSlider*>("lamp1RED");
@@ -26,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     QSlider* rSlider2 = findChild<QSlider*>("lamp2RED");
     QSlider* gSlider2 = findChild<QSlider*>("lamp2GREEN");
     QSlider* bSlider2 = findChild<QSlider*>("lamp2BLUE");
-    if (rSlider1 && gSlider1 && bSlider1) {
+    if (rSlider2 && gSlider2 && bSlider2) {
         connect(rSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
         connect(gSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
         connect(bSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
@@ -46,10 +50,41 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 MainWindow::~MainWindow() {}
 
 void MainWindow::button_lampen_keuken_clicked() {
-    uint8_t data = 1; // true
+    if(!ui.keukenLampenKnop) {
+        fprintf(stderr, "No keukenlampen button found!");
+        return;
+    }
+    bool checked = ui.keukenLampenKnop->isChecked();
+    uint8_t data = checked; 
     send_dataframe(
         raspberryClientIP,
         101, // message ID for the lamps
+        1, // only one value
+        3, // boolean
+        &data,
+        1 // data size 
+    );
+}
+
+void MainWindow::button_deuren_keuken_clicked() {
+    bool checked = ui.keukenDeurenKnop->isChecked();
+    uint8_t data = checked; 
+    send_dataframe(
+        raspberryClientIP,
+        121, // message ID for the kitchen doors
+        1, // only one value
+        3, // boolean
+        &data,
+        1 // data size 
+    );
+}
+
+void MainWindow::button_deuren_restaurant_clicked() {
+    bool checked = ui.restaurantDeurenKnop->isChecked();
+    uint8_t data = checked;
+    send_dataframe(
+        raspberryClientIP,
+        123, // message ID for the restaurant doors
         1, // only one value
         3, // boolean
         &data,
@@ -94,7 +129,6 @@ void MainWindow::lichtkrant_apply_clicked() {
 void MainWindow::lichtkrant_reset_clicked() {
     QTextEdit* lichtkrantInput = findChild<QTextEdit*>("lichtkrantInput");
     lichtkrantInput->clear();
-
 }
 
 void MainWindow::slider_lampen_rgb_1_released() {

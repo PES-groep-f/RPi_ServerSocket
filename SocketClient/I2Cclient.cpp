@@ -3,6 +3,7 @@
 #include <wiringPiI2C.h>
 #include <cstring>
 #include "globals.h"
+#include <bitset>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ short bytesToShort(uint8_t* bytes) {
 int setup_I2C() {
     fd0 = wiringPiI2CSetup(STMboard0_adress);
     fd1 = wiringPiI2CSetup(STMboard1_adress);
-    // fd2 = wiringPiI2CSetup(STMboard2_adress);
+    fd2 = wiringPiI2CSetup(STMboard2_adress);
     if (fd0 == -1) {
         cerr << "Failed to initialize I2C!" << endl;
         return 1;
@@ -54,5 +55,35 @@ int read_co2_data(float* out) {
     }
 
     out[2] = (float) bytesToShort(buffer);
+    return 0;
+}
+
+int write_keukenlampen_data(bool aan) { // aan is true als de keukenlampen aan moeten, anders false
+    const uint8_t v = aan? 1 : 0;
+    if(wiringPiI2CWrite(fd2, v)) {
+        cerr << "Could not send keukenlampen data!" << endl;
+        return 1;
+    }
+    cout << "Sent data: " << bitset<8>(v) << " to STM 3" << endl;
+    return 0;
+}
+
+int write_keuken_deuren_data(bool aan) {
+    const uint8_t v = aan? 3 : 2;
+    if(wiringPiI2CWrite(fd2, v)) {
+        cerr << "Could not send keuken deuren data!" << endl;
+        return 1;
+    }
+    cout << "Sent data: " << bitset<8>(v) << " to STM 3" << endl;
+    return 0;
+}
+
+int write_restaurant_deuren_data(bool aan) {
+    const uint8_t v = aan? 5 : 4;
+    if(wiringPiI2CWrite(fd2, v)) {
+        cerr << "Could not send restaurant deuren data!" << endl;
+        return 1;
+    }
+    cout << "Sent data: " << bitset<8>(v) << " to STM 3" << endl;
     return 0;
 }

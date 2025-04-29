@@ -9,6 +9,7 @@
 #include <bitset>
 
 #include "socketclient.h"
+#include "I2Cclient.h"
 #include "globals.h"
 #include "I2Cclient.h"
 
@@ -58,9 +59,26 @@ int receive_data() {
             } else if (vectorDataType == 3) { // boolean
                 bool data[vectorLength];
                 memcpy(data, dataPtr, sizeof(bool) * vectorLength);
-        
                 for (int i = 0; i < vectorLength; ++i) {
                     cout << "Data " << i << ": " << data[i] << endl;
+                }
+
+                switch(messageID) {
+                    case 101:
+                        if(write_keukenlampen_data(data[0])) {
+                            cerr << "Could not write to keukenlampen!" << endl;
+                        }
+                        break;
+                    case 121:
+                        if(write_keuken_deuren_data(data[0])) {
+                            cerr << "Could not write to keuken deuren!" << endl;
+                        }
+                        break;
+                    case 123:
+                        if(write_restaurant_deuren_data(data[0])) {
+                            cerr << "Could not write to restaurant deuren!" << endl;
+                        }
+                        break;
                 }
             } else if (vectorDataType == 4) { // ASCII null-terminated string
                 char data[1024];

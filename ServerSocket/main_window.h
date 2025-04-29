@@ -27,6 +27,8 @@ public slots:
 private slots:
     void button_lampen_keuken_clicked();
     void button_ventilator_clicked();
+    void button_deuren_keuken_clicked();
+    void button_deuren_restaurant_clicked();
     void slider_lampen_rgb_1_released();
     void slider_lampen_rgb_2_released();
     void lichtkrant_apply_clicked();
