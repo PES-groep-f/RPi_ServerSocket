@@ -14,9 +14,11 @@ using namespace std;
 extern unordered_map<string, int> clientMap;
 extern mutex clientMapMutex;
 extern string raspberryClientIP;
-extern string ventilatorIP;
-extern string RGBLamp0IP;
-extern string RGBLamp1IP;
+
+extern string Wemos_0_IP;
+extern string Wemos_1_IP;
+extern string Wemos_2_IP;
+
 extern MainWindow* mainWindow;
 extern mutex mainWindowMutex;
 

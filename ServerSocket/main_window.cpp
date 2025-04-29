@@ -31,7 +31,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
         connect(gSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
         connect(bSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
     }
+
+    // Lichtkrant dialog box 
+    QDialogButtonBox* lichtkrant_knoppen = findChild<QDialogButtonBox*>("lichtkrantKnoppen");
+    if(lichtkrant_knoppen) {
+        QPushButton* applyButton = lichtkrant_knoppen->button(QDialogButtonBox::Apply);
+        connect(applyButton, &QPushButton::clicked, this, &MainWindow::lichtkrant_apply_clicked);
+        QPushButton* resetButton = lichtkrant_knoppen->button(QDialogButtonBox::Reset);
+        connect(resetButton, &QPushButton::clicked, this, &MainWindow::lichtkrant_reset_clicked);
+    }
 }
+
 
 MainWindow::~MainWindow() {}
 
@@ -55,13 +65,36 @@ void MainWindow::button_ventilator_clicked() {
     bool checked = ui.ventilatorKnop->isChecked();
     uint8_t data = checked;
     send_dataframe(
-        ventilatorIP,
+        Wemos_0_IP,
         113, // message ID for the ventilator
         1, // only one value
         3, // boolean
         &data,
         1 // data size 
     );
+}
+
+void MainWindow::lichtkrant_apply_clicked() {
+    QTextEdit* lichtkrantInput = findChild<QTextEdit*>("lichtkrantInput");
+    QString tekst = lichtkrantInput->toPlainText();
+    char data[1024];
+    uint length = tekst.length();
+    strncpy(data, tekst.toUtf8().constData(), length * sizeof(char));
+    data[length] = '\0';
+    send_dataframe(
+        Wemos_1_IP,
+        104,
+        1, // altijd 1 voor ASCII
+        4, // ASCII
+        reinterpret_cast<uint8_t*>(data),
+        length + 1
+    );
+}
+
+void MainWindow::lichtkrant_reset_clicked() {
+    QTextEdit* lichtkrantInput = findChild<QTextEdit*>("lichtkrantInput");
+    lichtkrantInput->clear();
+
 }
 
 void MainWindow::slider_lampen_rgb_1_released() {
@@ -71,7 +104,7 @@ void MainWindow::slider_lampen_rgb_1_released() {
     data[1] = static_cast<uint8_t>(ui.lamp1GREEN->value()); //green
     data[2] = static_cast<uint8_t>(ui.lamp1BLUE->value()); //blue
     send_dataframe(
-        RGBLamp0IP,
+        Wemos_1_IP,
         102, // message ID for rgb lamp 1
         3, // three values
         5, // uint8
@@ -86,7 +119,7 @@ void MainWindow::slider_lampen_rgb_2_released() {
     data[1] = static_cast<uint8_t>(ui.lamp2GREEN->value()); //green
     data[2] = static_cast<uint8_t>(ui.lamp2BLUE->value()); //blue
     send_dataframe(
-        RGBLamp1IP,
+        Wemos_2_IP,
         103, // message ID for rgb lamp 2
         3, // three values 
         5, // uint8
