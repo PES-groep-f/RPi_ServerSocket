@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     if (keukenLampenKnop) connect(keukenLampenKnop, &QPushButton::clicked, this, &MainWindow::button_lampen_keuken_clicked);
     QPushButton* ventilatorKnop = findChild<QPushButton*>("ventilatorKnop");
     if (ventilatorKnop) connect(ventilatorKnop, &QPushButton::toggled, this, &MainWindow::button_ventilator_clicked);
+    QPushButton* keukenDeurenKnop = findChild<QPushButton*>("keukenDeurenKnop");
+    if (keukenDeurenKnop) connect(keukenDeurenKnop, &QPushButton::clicked, this, &MainWindow::button_deuren_keuken_clicked);
+    QPushButton* restaurantDeurenKnop = findChild<QPushButton*>("restaurantDeurenKnop");
+    if (restaurantDeurenKnop) connect(restaurantDeurenKnop, &QPushButton::clicked, this, &MainWindow::button_deuren_restaurant_clicked);
 
     // connect RGB sliders to functions
     QSlider* rSlider1 = findChild<QSlider*>("lamp1RED");
@@ -26,22 +30,61 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     QSlider* rSlider2 = findChild<QSlider*>("lamp2RED");
     QSlider* gSlider2 = findChild<QSlider*>("lamp2GREEN");
     QSlider* bSlider2 = findChild<QSlider*>("lamp2BLUE");
-    if (rSlider1 && gSlider1 && bSlider1) {
+    if (rSlider2 && gSlider2 && bSlider2) {
         connect(rSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
         connect(gSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
         connect(bSlider2, &QSlider::sliderReleased, this, &MainWindow::slider_lampen_rgb_2_released);
     }
 
-
+    // Lichtkrant dialog box 
+    QDialogButtonBox* lichtkrant_knoppen = findChild<QDialogButtonBox*>("lichtkrantKnoppen");
+    if(lichtkrant_knoppen) {
+        QPushButton* applyButton = lichtkrant_knoppen->button(QDialogButtonBox::Apply);
+        connect(applyButton, &QPushButton::clicked, this, &MainWindow::lichtkrant_apply_clicked);
+        QPushButton* resetButton = lichtkrant_knoppen->button(QDialogButtonBox::Reset);
+        connect(resetButton, &QPushButton::clicked, this, &MainWindow::lichtkrant_reset_clicked);
+    }
 }
+
 
 MainWindow::~MainWindow() {}
 
 void MainWindow::button_lampen_keuken_clicked() {
-    uint8_t data = 1; // true
+    if(!ui.keukenLampenKnop) {
+        fprintf(stderr, "No keukenlampen button found!");
+        return;
+    }
+    bool checked = ui.keukenLampenKnop->isChecked();
+    uint8_t data = checked; 
     send_dataframe(
         raspberryClientIP,
         101, // message ID for the lamps
+        1, // only one value
+        3, // boolean
+        &data,
+        1 // data size 
+    );
+}
+
+void MainWindow::button_deuren_keuken_clicked() {
+    bool checked = ui.keukenDeurenKnop->isChecked();
+    uint8_t data = checked; 
+    send_dataframe(
+        raspberryClientIP,
+        121, // message ID for the kitchen doors
+        1, // only one value
+        3, // boolean
+        &data,
+        1 // data size 
+    );
+}
+
+void MainWindow::button_deuren_restaurant_clicked() {
+    bool checked = ui.restaurantDeurenKnop->isChecked();
+    uint8_t data = checked;
+    send_dataframe(
+        raspberryClientIP,
+        123, // message ID for the restaurant doors
         1, // only one value
         3, // boolean
         &data,
@@ -57,13 +100,35 @@ void MainWindow::button_ventilator_clicked() {
     bool checked = ui.ventilatorKnop->isChecked();
     uint8_t data = checked;
     send_dataframe(
-        ventilatorIP,
+        Wemos_0_IP,
         113, // message ID for the ventilator
         1, // only one value
         3, // boolean
         &data,
         1 // data size 
     );
+}
+
+void MainWindow::lichtkrant_apply_clicked() {
+    QTextEdit* lichtkrantInput = findChild<QTextEdit*>("lichtkrantInput");
+    QString tekst = lichtkrantInput->toPlainText();
+    char data[1024];
+    uint length = tekst.length();
+    strncpy(data, tekst.toUtf8().constData(), length * sizeof(char));
+    data[length] = '\0';
+    send_dataframe(
+        Wemos_1_IP,
+        104,
+        1, // altijd 1 voor ASCII
+        4, // ASCII
+        reinterpret_cast<uint8_t*>(data),
+        length + 1
+    );
+}
+
+void MainWindow::lichtkrant_reset_clicked() {
+    QTextEdit* lichtkrantInput = findChild<QTextEdit*>("lichtkrantInput");
+    lichtkrantInput->clear();
 }
 
 void MainWindow::slider_lampen_rgb_1_released() {
@@ -73,7 +138,7 @@ void MainWindow::slider_lampen_rgb_1_released() {
     data[1] = static_cast<uint8_t>(ui.lamp1GREEN->value()); //green
     data[2] = static_cast<uint8_t>(ui.lamp1BLUE->value()); //blue
     send_dataframe(
-        raspberryClientIP,
+        Wemos_1_IP,
         102, // message ID for rgb lamp 1
         3, // three values
         5, // uint8
@@ -88,7 +153,7 @@ void MainWindow::slider_lampen_rgb_2_released() {
     data[1] = static_cast<uint8_t>(ui.lamp2GREEN->value()); //green
     data[2] = static_cast<uint8_t>(ui.lamp2BLUE->value()); //blue
     send_dataframe(
-        raspberryClientIP,
+        Wemos_2_IP,
         103, // message ID for rgb lamp 2
         3, // three values 
         5, // uint8
@@ -97,17 +162,17 @@ void MainWindow::slider_lampen_rgb_2_released() {
     );
 }
 
-void MainWindow::updateCO2Value(float value) {
+void MainWindow::updateEnvironmentValues(float temperature, float humidity, float co2) {
     if (ui.co2ValueIndicator) {
-        ui.co2ValueIndicator->display(value);
+        ui.co2ValueIndicator->display(co2);
 
-        if (grenswaardeCO2Overschreden && (value <= 900)) { // reset
+        if (grenswaardeCO2Overschreden && (co2 <= 900)) { // reset
             QPalette palette = ui.co2ValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black);            
             ui.co2ValueIndicator->setPalette(palette);
             updateVentilator(false);
         }
-        grenswaardeCO2Overschreden = (value > 900);
+        grenswaardeCO2Overschreden = (co2 > 900);
         if (grenswaardeCO2Overschreden) {
             QPalette palette = ui.co2ValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::red);
@@ -115,19 +180,17 @@ void MainWindow::updateCO2Value(float value) {
             updateVentilator(true);
         }
     }
-}
 
-void MainWindow::updateTemperatureValue(float value) {
     if (ui.tempValueIndicator) {
-        ui.tempValueIndicator->display(value);
+        ui.tempValueIndicator->display(temperature);
 
-        if (grenswaardeTemperatureOverschreden && value <= 40) { // reset
+        if (grenswaardeTemperatureOverschreden && temperature <= 40) { // reset
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black); 
             ui.co2ValueIndicator->setPalette(palette);
             updateVentilator(false);
         }
-        grenswaardeTemperatureOverschreden = (value > 40);
+        grenswaardeTemperatureOverschreden = (temperature > 40);
         if (grenswaardeTemperatureOverschreden) {
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::red);
@@ -135,29 +198,31 @@ void MainWindow::updateTemperatureValue(float value) {
             updateVentilator(true);
         }
     }
-}
 
-void MainWindow::updateHumidityValue(float value) {
     if (ui.luchtValueIndicator) {
-        ui.luchtValueIndicator->display(value);
+        ui.luchtValueIndicator->display(humidity);
     }
 }
 
+
 void MainWindow::updateDrukknop1(bool value) {
-    if (ui.testKnopTafel1) {
-        ui.testKnopTafel1->setPower(value);
+    if (ui.testKnopTafel1 && value) {
+        drukknop0_ingedrukt = !drukknop0_ingedrukt;
+        ui.testKnopTafel1->setPower(drukknop0_ingedrukt);
     }
 }
 
 void MainWindow::updateDrukknop2(bool value) {
-    if (ui.testKnopTafel2) {
-        ui.testKnopTafel2->setPower(value);
+    if (ui.testKnopTafel2 && value) {
+        drukknop1_ingedrukt = !drukknop1_ingedrukt;
+        ui.testKnopTafel2->setPower(drukknop1_ingedrukt);
     }
 }
 
 void MainWindow::updateDrukknop3(bool value) {
-    if (ui.testKnopTafel3) {
-        ui.testKnopTafel3->setPower(value);
+    if (ui.testKnopTafel3 && value) {
+        drukknop2_ingedrukt = !drukknop2_ingedrukt;
+        ui.testKnopTafel3->setPower(drukknop2_ingedrukt);
     }
 }
 

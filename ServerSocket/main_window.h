@@ -18,9 +18,7 @@ public:
     ~MainWindow();
 
 public slots:
-    void updateCO2Value(float value);
-    void updateHumidityValue(float value);
-    void updateTemperatureValue(float value);
+    void updateEnvironmentValues(float temperature, float humidity, float co2);
     void updateDrukknop1(bool value);
     void updateDrukknop2(bool value);
     void updateDrukknop3(bool value);
@@ -29,12 +27,21 @@ public slots:
 private slots:
     void button_lampen_keuken_clicked();
     void button_ventilator_clicked();
+    void button_deuren_keuken_clicked();
+    void button_deuren_restaurant_clicked();
     void slider_lampen_rgb_1_released();
     void slider_lampen_rgb_2_released();
+    void lichtkrant_apply_clicked();
+    void lichtkrant_reset_clicked();
 
 private:
     Ui::MainWindow ui;
-
+    bool grenswaardeCO2Overschreden;
+    bool grenswaardeHumidityOverschreden;
+    bool grenswaardeTemperatureOverschreden;
+    bool drukknop0_ingedrukt = false;
+    bool drukknop1_ingedrukt = false;
+    bool drukknop2_ingedrukt = false;
 };
 
 #endif // MAIN_WINDOW_H

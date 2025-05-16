@@ -9,6 +9,7 @@
 #include <bitset>
 
 #include "socketclient.h"
+#include "I2Cclient.h"
 #include "globals.h"
 #include "I2Cclient.h"
 
@@ -58,9 +59,26 @@ int receive_data() {
             } else if (vectorDataType == 3) { // boolean
                 bool data[vectorLength];
                 memcpy(data, dataPtr, sizeof(bool) * vectorLength);
-        
                 for (int i = 0; i < vectorLength; ++i) {
                     cout << "Data " << i << ": " << data[i] << endl;
+                }
+
+                switch(messageID) {
+                    case 101:
+                        if(write_keukenlampen_data(data[0])) {
+                            cerr << "Could not write to keukenlampen!" << endl;
+                        }
+                        break;
+                    case 121:
+                        if(write_keuken_deuren_data(data[0])) {
+                            cerr << "Could not write to keuken deuren!" << endl;
+                        }
+                        break;
+                    case 123:
+                        if(write_restaurant_deuren_data(data[0])) {
+                            cerr << "Could not write to restaurant deuren!" << endl;
+                        }
+                        break;
                 }
             } else if (vectorDataType == 4) { // ASCII null-terminated string
                 char data[1024];
@@ -84,47 +102,25 @@ int receive_data() {
 int send_testData() {
     while(1) {
         
-        // CO2 sensor
         float co2_value = 600.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1100.0 - 600.0)));
+        float humidity_value = 30.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (50.0 - 30.0)));
+        float temperature_value = 19.5 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (23.0 - 19.5)));
+
+        uint8_t send_buffer[12];
+        memcpy(send_buffer, &temperature_value, 4);
+        memcpy(send_buffer + 4, &humidity_value, 4);
+        memcpy(send_buffer + 8, &co2_value, 4);
+
         if(send_dataframe(
-            111, // messageID 
-            1, // vector size 1 
+            122, // messageID 
+            3, // vector size 1 
             2,  // float
-            reinterpret_cast<uint8_t*>(&co2_value),
-            4 // 4 bytes for a float
+            send_buffer,
+            12 // 4 bytes for a float
         )) {
             cerr << "Could not send CO2 value to server!" << endl;
             return 1;
         }
-        this_thread::sleep_for(chrono::seconds(1));
-
-        // humidity sensor
-        float humidity_value = 30.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (50.0 - 30.0)));
-        if(send_dataframe(
-            112, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&humidity_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send humidity value to server!" << endl;
-            return 1;
-        }
-        this_thread::sleep_for(chrono::seconds(1));
-
-        // temperature sensor
-        float temperature_value = 19.5 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (23.0 - 19.5)));
-        if(send_dataframe(
-            122, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&temperature_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send temperature value to server!" << endl;
-            return 1;
-        }
-
         this_thread::sleep_for(chrono::seconds(1));
     }
 
@@ -132,45 +128,30 @@ int send_testData() {
 }
 
 // Take values from the I2C bus and translate them to socket messages
-// !TODO: implement timeslots if this is necessary, or other chrono polling logic
+float environment_values[3];
 int send_data() {
     while(1) {
-        float co2_value = read_co2_data();
-        if(send_dataframe(
-            111, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&co2_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send CO2 value to server!" << endl;
-            return 1;
-        }
-                // humidity sensor
-        float humidity_value = read_humidity_data();
-        if(send_dataframe(
-            112, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&humidity_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send humidity value to server!" << endl;
-            return 1;
+
+        // environment sensor
+        if(read_temp_humidity_data(environment_values)) {
+            cerr << "Failed to read temperature/humidity data, not sending to server!" << endl;
+        } else if (read_co2_data(environment_values)) { 
+            cerr << "Failed to read co2 data, not sending to server!" << endl;
+        } else {
+            uint8_t send_buffer[12];
+            memcpy(send_buffer, environment_values, 12);
+            if(send_dataframe(
+                122, // messageID 
+                3, // vector size 3
+                2,  // float
+                send_buffer,
+                12 // 4 bytes for a float, times 3 = 12
+            )) {
+                cerr << "Could not send environment values to server!" << endl;
+            }
         }
 
-        // temperature sensor
-        float temperature_value = read_temperature_data();
-        if(send_dataframe(
-            122, // messageID 
-            1, // vector size 1 
-            2,  // float
-            reinterpret_cast<uint8_t*>(&temperature_value),
-            4 // 4 bytes for a float
-        )) {
-            cerr << "Could not send temperature value to server!" << endl;
-            return 1;
-        }
+        this_thread::sleep_for(chrono::seconds(1));
     }
 }
 
