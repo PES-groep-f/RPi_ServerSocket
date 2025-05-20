@@ -109,6 +109,7 @@ public:
         knoppenLayout->setSpacing(0);
         knoppenLayout->setObjectName(QString::fromUtf8("knoppenLayout"));
         keukenLampenKnop = new QPushButton(layoutWidget);
+        keukenLampenKnop->setCheckable(true);
         keukenLampenKnop->setObjectName(QString::fromUtf8("keukenLampenKnop"));
         QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy2.setHorizontalStretch(0);
@@ -127,6 +128,7 @@ public:
         knoppenLayout->addWidget(ventilatorKnop, 0, 1, 1, 1);
 
         keukenDeurenKnop = new QPushButton(layoutWidget);
+        keukenDeurenKnop->setCheckable(true);
         keukenDeurenKnop->setObjectName(QString::fromUtf8("keukenDeurenKnop"));
         sizePolicy2.setHeightForWidth(keukenDeurenKnop->sizePolicy().hasHeightForWidth());
         keukenDeurenKnop->setSizePolicy(sizePolicy2);
@@ -134,6 +136,7 @@ public:
         knoppenLayout->addWidget(keukenDeurenKnop, 1, 0, 1, 1);
 
         restaurantDeurenKnop = new QPushButton(layoutWidget);
+        restaurantDeurenKnop->setCheckable(true);
         restaurantDeurenKnop->setObjectName(QString::fromUtf8("restaurantDeurenKnop"));
         sizePolicy2.setHeightForWidth(restaurantDeurenKnop->sizePolicy().hasHeightForWidth());
         restaurantDeurenKnop->setSizePolicy(sizePolicy2);

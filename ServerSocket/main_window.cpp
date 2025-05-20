@@ -14,9 +14,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     QPushButton* ventilatorKnop = findChild<QPushButton*>("ventilatorKnop");
     if (ventilatorKnop) connect(ventilatorKnop, &QPushButton::toggled, this, &MainWindow::button_ventilator_clicked);
     QPushButton* keukenDeurenKnop = findChild<QPushButton*>("keukenDeurenKnop");
-    if (keukenDeurenKnop) connect(keukenDeurenKnop, &QPushButton::clicked, this, &MainWindow::button_deuren_keuken_clicked);
+    if (keukenDeurenKnop) connect(keukenDeurenKnop, &QPushButton::toggled, this, &MainWindow::button_deuren_keuken_clicked);
     QPushButton* restaurantDeurenKnop = findChild<QPushButton*>("restaurantDeurenKnop");
-    if (restaurantDeurenKnop) connect(restaurantDeurenKnop, &QPushButton::clicked, this, &MainWindow::button_deuren_restaurant_clicked);
+    if (restaurantDeurenKnop) connect(restaurantDeurenKnop, &QPushButton::toggled, this, &MainWindow::button_deuren_restaurant_clicked);
 
     // connect RGB sliders to functions
     QSlider* rSlider1 = findChild<QSlider*>("lamp1RED");
@@ -100,7 +100,7 @@ void MainWindow::button_ventilator_clicked() {
     bool checked = ui.ventilatorKnop->isChecked();
     uint8_t data = checked;
     send_dataframe(
-        Wemos_0_IP,
+        Wemos_3_IP,
         113, // message ID for the ventilator
         1, // only one value
         3, // boolean
@@ -112,12 +112,14 @@ void MainWindow::button_ventilator_clicked() {
 void MainWindow::lichtkrant_apply_clicked() {
     QTextEdit* lichtkrantInput = findChild<QTextEdit*>("lichtkrantInput");
     QString tekst = lichtkrantInput->toPlainText();
-    char data[1024];
     uint length = tekst.length();
+    if(length == 0) return;
+    if(length >= 1024) length = 1024;
+    char data[1024];
     strncpy(data, tekst.toUtf8().constData(), length * sizeof(char));
     data[length] = '\0';
     send_dataframe(
-        Wemos_1_IP,
+        Wemos_3_IP,
         104,
         1, // altijd 1 voor ASCII
         4, // ASCII
@@ -171,6 +173,8 @@ void MainWindow::updateEnvironmentValues(float temperature, float humidity, floa
             palette.setColor(palette.WindowText, Qt::black);            
             ui.co2ValueIndicator->setPalette(palette);
             updateVentilator(false);
+            updateKeukenDeurenKnop(false);
+            updateRestaurantDeurenKnop(false);
         }
         grenswaardeCO2Overschreden = (co2 > 900);
         if (grenswaardeCO2Overschreden) {
@@ -178,6 +182,8 @@ void MainWindow::updateEnvironmentValues(float temperature, float humidity, floa
             palette.setColor(palette.WindowText, Qt::red);
             ui.co2ValueIndicator->setPalette(palette);
             updateVentilator(true);
+            updateKeukenDeurenKnop(true);
+            updateRestaurantDeurenKnop(true);
         }
     }
 
@@ -187,15 +193,19 @@ void MainWindow::updateEnvironmentValues(float temperature, float humidity, floa
         if (grenswaardeTemperatureOverschreden && temperature <= 40) { // reset
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black); 
-            ui.co2ValueIndicator->setPalette(palette);
+            ui.tempValueIndicator->setPalette(palette);
             updateVentilator(false);
+            updateKeukenDeurenKnop(false);
+            updateRestaurantDeurenKnop(false);
         }
         grenswaardeTemperatureOverschreden = (temperature > 40);
         if (grenswaardeTemperatureOverschreden) {
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::red);
-            ui.co2ValueIndicator->setPalette(palette);
+            ui.tempValueIndicator->setPalette(palette);
             updateVentilator(true);
+            updateKeukenDeurenKnop(true);
+            updateRestaurantDeurenKnop(true);
         }
     }
 
@@ -228,4 +238,12 @@ void MainWindow::updateDrukknop3(bool value) {
 
 void MainWindow::updateVentilator(bool value) {
     if (ui.ventilatorKnop) ui.ventilatorKnop->setChecked(value);
+}
+
+void MainWindow::updateKeukenDeurenKnop(bool value) {
+    if(ui.keukenDeurenKnop) ui.keukenDeurenKnop->setChecked(value);
+}
+
+void MainWindow::updateRestaurantDeurenKnop(bool value) {
+    if(ui.restaurantDeurenKnop) ui.restaurantDeurenKnop->setChecked(value);
 }

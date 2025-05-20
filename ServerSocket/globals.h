@@ -18,6 +18,7 @@ extern string raspberryClientIP;
 extern string Wemos_0_IP;
 extern string Wemos_1_IP;
 extern string Wemos_2_IP;
+extern string Wemos_3_IP;
 
 extern MainWindow* mainWindow;
 extern mutex mainWindowMutex;

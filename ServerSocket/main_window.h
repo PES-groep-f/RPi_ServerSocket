@@ -23,6 +23,8 @@ public slots:
     void updateDrukknop2(bool value);
     void updateDrukknop3(bool value);
     void updateVentilator(bool value);
+    void updateKeukenDeurenKnop(bool value);
+    void updateRestaurantDeurenKnop(bool value);
 
 private slots:
     void button_lampen_keuken_clicked();
