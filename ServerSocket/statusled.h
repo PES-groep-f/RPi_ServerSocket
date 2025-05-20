@@ -26,6 +26,12 @@ public slots:
         }
     }
 
+    void togglePower() {
+        m_power = !m_power;
+        emit powerChanged();
+        update();
+    }
+
     void setText(const QString& text) {
         if (text != m_text) {
             m_text = text;
@@ -56,6 +62,13 @@ protected:
         ledPainter.setFont(QFont("Arial", 10));
         QRect textRect(40, 0, width() - 50, height());
         ledPainter.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, m_text);
+    }
+
+    virtual void mousePressEvent(QMouseEvent* event) override {
+        Q_UNUSED(event);
+        if (m_power) {
+            setPower(false);
+        }
     }
 
 private:
