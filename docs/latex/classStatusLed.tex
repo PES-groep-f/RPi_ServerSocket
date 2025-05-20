@@ -1,0 +1,190 @@
+\hypertarget{classStatusLed}{}\doxysection{Status\+Led Class Reference}
+\label{classStatusLed}\index{StatusLed@{StatusLed}}
+
+
+Een eenvoudige LED-\/statusindicator met tekstlabel.  
+
+
+
+
+{\ttfamily \#include $<$statusled.\+h$>$}
+
+
+
+Inheritance diagram for Status\+Led\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classStatusLed__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Status\+Led\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classStatusLed__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classStatusLed_ae69f7148b6dccc0db059f6f5c4ec04a1}{set\+Power}} (bool \mbox{\hyperlink{classStatusLed_ace0d3c54056e93bf17ba58a0050c16f8}{power}})
+\begin{DoxyCompactList}\small\item\em Zet de status van de LED. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classStatusLed_a30d38e4116c5a8d3c4d05acf7e4c77b1}\label{classStatusLed_a30d38e4116c5a8d3c4d05acf7e4c77b1}} 
+void \mbox{\hyperlink{classStatusLed_a30d38e4116c5a8d3c4d05acf7e4c77b1}{toggle\+Power}} ()
+\begin{DoxyCompactList}\small\item\em Wisselt de huidige status van de LED (aan ⇄ uit). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classStatusLed_a88cedb80ec203b2a432220ce8a0b5eee}{set\+Text}} (const QString \&\mbox{\hyperlink{classStatusLed_aaaa05a82cb3bfbc67363721d9da68b35}{text}})
+\begin{DoxyCompactList}\small\item\em Wijzigt de weergegeven tekst naast de LED. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classStatusLed_a6940f300ee0db3595cd289f78e1dff3a}\label{classStatusLed_a6940f300ee0db3595cd289f78e1dff3a}} 
+void \mbox{\hyperlink{classStatusLed_a6940f300ee0db3595cd289f78e1dff3a}{power\+Changed}} ()
+\begin{DoxyCompactList}\small\item\em Signaal dat wordt uitgezonden wanneer de LED-\/status wijzigt. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classStatusLed_ada1261a0aa53f354fbb61c200d3b5dde}\label{classStatusLed_ada1261a0aa53f354fbb61c200d3b5dde}} 
+void \mbox{\hyperlink{classStatusLed_ada1261a0aa53f354fbb61c200d3b5dde}{text\+Changed}} ()
+\begin{DoxyCompactList}\small\item\em Signaal dat wordt uitgezonden wanneer de tekst verandert. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classStatusLed_af919c9f53a4f0254ca213fc7f8158e0b}{Status\+Led}} (QWidget $\ast$parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Constructor voor de \mbox{\hyperlink{classStatusLed}{Status\+Led}} widget. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classStatusLed_a4329c23ee3fbe77cd8842ea4a3323552}{power}} () const
+\begin{DoxyCompactList}\small\item\em Geeft de huidige status van de LED terug. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classStatusLed_a42bce3e5089fed4c10ccf7a9bd3398f1}{text}} () const
+\begin{DoxyCompactList}\small\item\em Geeft de huidige tekst naast de LED terug. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classStatusLed_acfeefc5019a5aeca3480e99774889e92}{paint\+Event}} (QPaint\+Event $\ast$event) override
+\begin{DoxyCompactList}\small\item\em Tekenfunctie om de LED en tekst weer te geven. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classStatusLed_ad0c857d52a0e44253d7caa2921617a5c}{mouse\+Press\+Event}} (QMouse\+Event $\ast$event) override
+\begin{DoxyCompactList}\small\item\em Reageert op muisklikken door de LED uit te schakelen (indien aan). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classStatusLed_ace0d3c54056e93bf17ba58a0050c16f8}\label{classStatusLed_ace0d3c54056e93bf17ba58a0050c16f8}} 
+bool \mbox{\hyperlink{classStatusLed_ace0d3c54056e93bf17ba58a0050c16f8}{power}}
+\begin{DoxyCompactList}\small\item\em Eigenschap voor de LED-\/status (aan/uit). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classStatusLed_aaaa05a82cb3bfbc67363721d9da68b35}\label{classStatusLed_aaaa05a82cb3bfbc67363721d9da68b35}} 
+QString \mbox{\hyperlink{classStatusLed_aaaa05a82cb3bfbc67363721d9da68b35}{text}}
+\begin{DoxyCompactList}\small\item\em Eigenschap voor het tekstlabel naast de LED. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Een eenvoudige LED-\/statusindicator met tekstlabel. 
+
+Deze klasse toont een cirkelvormige LED die rood kleurt wanneer geactiveerd. Daarnaast wordt een tekstlabel weergegeven naast de LED. Klikken op de widget schakelt de LED uit indien deze aanstaat. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classStatusLed_af919c9f53a4f0254ca213fc7f8158e0b}\label{classStatusLed_af919c9f53a4f0254ca213fc7f8158e0b}} 
+\index{StatusLed@{StatusLed}!StatusLed@{StatusLed}}
+\index{StatusLed@{StatusLed}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{StatusLed()}{StatusLed()}}
+{\footnotesize\ttfamily Status\+Led\+::\+Status\+Led (\begin{DoxyParamCaption}\item[{QWidget $\ast$}]{parent = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Constructor voor de \mbox{\hyperlink{classStatusLed}{Status\+Led}} widget. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & De bovenliggende widget (optioneel). \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classStatusLed_ad0c857d52a0e44253d7caa2921617a5c}\label{classStatusLed_ad0c857d52a0e44253d7caa2921617a5c}} 
+\index{StatusLed@{StatusLed}!mousePressEvent@{mousePressEvent}}
+\index{mousePressEvent@{mousePressEvent}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{mousePressEvent()}{mousePressEvent()}}
+{\footnotesize\ttfamily virtual void Status\+Led\+::mouse\+Press\+Event (\begin{DoxyParamCaption}\item[{QMouse\+Event $\ast$}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reageert op muisklikken door de LED uit te schakelen (indien aan). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & Het mouse press event (wordt niet gebruikt). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classStatusLed_acfeefc5019a5aeca3480e99774889e92}\label{classStatusLed_acfeefc5019a5aeca3480e99774889e92}} 
+\index{StatusLed@{StatusLed}!paintEvent@{paintEvent}}
+\index{paintEvent@{paintEvent}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{paintEvent()}{paintEvent()}}
+{\footnotesize\ttfamily virtual void Status\+Led\+::paint\+Event (\begin{DoxyParamCaption}\item[{QPaint\+Event $\ast$}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Tekenfunctie om de LED en tekst weer te geven. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & Het paint event (wordt niet gebruikt). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classStatusLed_a4329c23ee3fbe77cd8842ea4a3323552}\label{classStatusLed_a4329c23ee3fbe77cd8842ea4a3323552}} 
+\index{StatusLed@{StatusLed}!power@{power}}
+\index{power@{power}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{power()}{power()}}
+{\footnotesize\ttfamily bool Status\+Led\+::power (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Geeft de huidige status van de LED terug. 
+
+\begin{DoxyReturn}{Returns}
+true als de LED aan staat, anders false. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classStatusLed_ae69f7148b6dccc0db059f6f5c4ec04a1}\label{classStatusLed_ae69f7148b6dccc0db059f6f5c4ec04a1}} 
+\index{StatusLed@{StatusLed}!setPower@{setPower}}
+\index{setPower@{setPower}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{setPower}{setPower}}
+{\footnotesize\ttfamily void Status\+Led\+::set\+Power (\begin{DoxyParamCaption}\item[{bool}]{power }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [slot]}}
+
+
+
+Zet de status van de LED. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em power} & true om de LED aan te zetten, false om uit te zetten. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classStatusLed_a88cedb80ec203b2a432220ce8a0b5eee}\label{classStatusLed_a88cedb80ec203b2a432220ce8a0b5eee}} 
+\index{StatusLed@{StatusLed}!setText@{setText}}
+\index{setText@{setText}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{setText}{setText}}
+{\footnotesize\ttfamily void Status\+Led\+::set\+Text (\begin{DoxyParamCaption}\item[{const QString \&}]{text }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [slot]}}
+
+
+
+Wijzigt de weergegeven tekst naast de LED. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & De nieuwe tekst. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classStatusLed_a42bce3e5089fed4c10ccf7a9bd3398f1}\label{classStatusLed_a42bce3e5089fed4c10ccf7a9bd3398f1}} 
+\index{StatusLed@{StatusLed}!text@{text}}
+\index{text@{text}!StatusLed@{StatusLed}}
+\doxysubsubsection{\texorpdfstring{text()}{text()}}
+{\footnotesize\ttfamily QString Status\+Led\+::text (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Geeft de huidige tekst naast de LED terug. 
+
+\begin{DoxyReturn}{Returns}
+De weergegeven tekst. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Server\+Socket/statusled.\+h\end{DoxyCompactItemize}

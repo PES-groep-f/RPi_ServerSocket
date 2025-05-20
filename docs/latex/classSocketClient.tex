@@ -1,0 +1,127 @@
+\hypertarget{classSocketClient}{}\doxysection{Socket\+Client Class Reference}
+\label{classSocketClient}\index{SocketClient@{SocketClient}}
+
+
+Verzorgt de communicatie tussen de client en server via TCP-\/sockets.  
+
+
+
+
+{\ttfamily \#include $<$socketclient.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classSocketClient_a84f944ed9faab30080fbf38bc6014c5c}{receive\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em Ontvangt en verwerkt inkomende berichten van de server. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classSocketClient_acb09cf24d849386f6a40330b97320f2c}{send\+\_\+test\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Stuurt gesimuleerde sensorwaarden (CO₂, temperatuur, vochtigheid) naar de server. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classSocketClient_afc38008fcc11956afbad8c2f2fdc9364}{send\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em Leest echte sensorwaarden via I2C en stuurt ze naar de server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSocketClient_a23504cebd50e8e144f4056a9ea346aca}{test\+\_\+co2\+Sensor}} ()
+\begin{DoxyCompactList}\small\item\em Simuleert een CO₂-\/sensor door willekeurige waarden te genereren en te versturen. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSocketClient_aa734c5953be0d2be84c825a3a33fedbc}\label{classSocketClient_aa734c5953be0d2be84c825a3a33fedbc}} 
+void \mbox{\hyperlink{classSocketClient_aa734c5953be0d2be84c825a3a33fedbc}{test\+\_\+temperature\+Sensor}} ()
+\begin{DoxyCompactList}\small\item\em Simuleert een temperatuursensor door waarden tussen 19.\+5°C en 23.\+0°C te sturen. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSocketClient_af5bb9fed359e6079d3a4e405ab1c82cb}\label{classSocketClient_af5bb9fed359e6079d3a4e405ab1c82cb}} 
+void \mbox{\hyperlink{classSocketClient_af5bb9fed359e6079d3a4e405ab1c82cb}{test\+\_\+humidity\+Sensor}} ()
+\begin{DoxyCompactList}\small\item\em Simuleert een luchtvochtigheidssensor door waarden tussen 30\% en 50\% te sturen. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classSocketClient_aa11db82aa4f8132bc306d7fd522a680a}{send\+\_\+dataframe}} (uint8\+\_\+t message\+ID, int vector\+\_\+size, int datatype, uint8\+\_\+t $\ast$data, uint datasize)
+\begin{DoxyCompactList}\small\item\em Stuurt een gegevensframe naar de server via de socket. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Verzorgt de communicatie tussen de client en server via TCP-\/sockets. 
+
+Deze klasse stuurt en ontvangt gestructureerde berichten, waaronder sensorwaarden en besturingscommando\textquotesingle{}s. Ondersteunt zowel echte als gesimuleerde data. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSocketClient_a84f944ed9faab30080fbf38bc6014c5c}\label{classSocketClient_a84f944ed9faab30080fbf38bc6014c5c}} 
+\index{SocketClient@{SocketClient}!receive\_data@{receive\_data}}
+\index{receive\_data@{receive\_data}!SocketClient@{SocketClient}}
+\doxysubsubsection{\texorpdfstring{receive\_data()}{receive\_data()}}
+{\footnotesize\ttfamily int Socket\+Client\+::receive\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Ontvangt en verwerkt inkomende berichten van de server. 
+
+Ondersteunt diverse datatypes zoals floats, bools, strings, enz. Bepaalt op basis van {\ttfamily message\+ID} welk subsysteem aangestuurd moet worden.
+
+\begin{DoxyReturn}{Returns}
+0 bij succes, 1 bij fout. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSocketClient_afc38008fcc11956afbad8c2f2fdc9364}\label{classSocketClient_afc38008fcc11956afbad8c2f2fdc9364}} 
+\index{SocketClient@{SocketClient}!send\_data@{send\_data}}
+\index{send\_data@{send\_data}!SocketClient@{SocketClient}}
+\doxysubsubsection{\texorpdfstring{send\_data()}{send\_data()}}
+{\footnotesize\ttfamily int Socket\+Client\+::send\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Leest echte sensorwaarden via I2C en stuurt ze naar de server. 
+
+Leest temperatuur, luchtvochtigheid en CO₂, en stuurt dit als {\ttfamily float} vector.
+
+\begin{DoxyReturn}{Returns}
+0 bij succes, 1 bij fout. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSocketClient_aa11db82aa4f8132bc306d7fd522a680a}\label{classSocketClient_aa11db82aa4f8132bc306d7fd522a680a}} 
+\index{SocketClient@{SocketClient}!send\_dataframe@{send\_dataframe}}
+\index{send\_dataframe@{send\_dataframe}!SocketClient@{SocketClient}}
+\doxysubsubsection{\texorpdfstring{send\_dataframe()}{send\_dataframe()}}
+{\footnotesize\ttfamily int Socket\+Client\+::send\+\_\+dataframe (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{message\+ID,  }\item[{int}]{vector\+\_\+size,  }\item[{int}]{datatype,  }\item[{uint8\+\_\+t $\ast$}]{data,  }\item[{uint}]{datasize }\end{DoxyParamCaption})}
+
+
+
+Stuurt een gegevensframe naar de server via de socket. 
+
+Het frame bestaat uit een message ID, metadata (vectorgrootte en datatype) en de daadwerkelijke data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+ID} & Unieke identificatie voor het type bericht (bijv. 122 voor sensorwaarden). \\
+\hline
+{\em vector\+\_\+size} & Aantal elementen in de vector (maximaal 15). \\
+\hline
+{\em datatype} & Type van de data (0\+: uint32, 1\+: int32, 2\+: float, 3\+: bool, 4\+: string, 5\+: uint8). \\
+\hline
+{\em data} & Pointer naar de ruwe data die verstuurd moet worden. \\
+\hline
+{\em datasize} & Grootte van de data in bytes (maximaal 1022). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 bij succes, -\/1 als het verzenden mislukt. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSocketClient_acb09cf24d849386f6a40330b97320f2c}\label{classSocketClient_acb09cf24d849386f6a40330b97320f2c}} 
+\index{SocketClient@{SocketClient}!send\_testData@{send\_testData}}
+\index{send\_testData@{send\_testData}!SocketClient@{SocketClient}}
+\doxysubsubsection{\texorpdfstring{send\_testData()}{send\_testData()}}
+{\footnotesize\ttfamily int Socket\+Client\+::send\+\_\+test\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stuurt gesimuleerde sensorwaarden (CO₂, temperatuur, vochtigheid) naar de server. 
+
+De waarden worden willekeurig gegenereerd binnen een realistisch bereik.
+
+\begin{DoxyReturn}{Returns}
+0 bij succes, 1 bij fout. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSocketClient_a23504cebd50e8e144f4056a9ea346aca}\label{classSocketClient_a23504cebd50e8e144f4056a9ea346aca}} 
+\index{SocketClient@{SocketClient}!test\_co2Sensor@{test\_co2Sensor}}
+\index{test\_co2Sensor@{test\_co2Sensor}!SocketClient@{SocketClient}}
+\doxysubsubsection{\texorpdfstring{test\_co2Sensor()}{test\_co2Sensor()}}
+{\footnotesize\ttfamily void Socket\+Client\+::test\+\_\+co2\+Sensor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Simuleert een CO₂-\/sensor door willekeurige waarden te genereren en te versturen. 
+
+Waarden liggen tussen 600.\+0 en 1100.\+0 ppm. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Socket\+Client/socketclient.\+h\item 
+Socket\+Client/socketclient.\+cpp\end{DoxyCompactItemize}

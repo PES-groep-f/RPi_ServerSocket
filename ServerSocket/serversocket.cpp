@@ -13,7 +13,7 @@
 using namespace std;
 
 // Function to handle communication with a single client
-void handleClient(int clientSocket, char ip_address[])
+void ServerSocket::handleClient(int clientSocket, char ip_address[])
 {
     cout << "Socket " << clientSocket << " opened." << endl;
 
@@ -32,7 +32,7 @@ void handleClient(int clientSocket, char ip_address[])
 
         // Null-terminate the received message
         buffer[bytesReceived] = '\0';
-        receive_dataframe(buffer);
+        this->receive_dataframe(buffer);
 
         // const char* response = "Message received!";
         // send(clientSocket, response, strlen(response), 0);
@@ -47,7 +47,7 @@ void handleClient(int clientSocket, char ip_address[])
 }
 
 // Function to process received dataframes
-void receive_dataframe(uint8_t buffer[1024]) {
+void ServerSocket::receive_dataframe(uint8_t buffer[1024]) {
     uint8_t messageID = buffer[0];
     uint8_t vectorMeta = buffer[1];
     uint8_t vectorLength = (vectorMeta >> 4) & 0x0F;
@@ -120,7 +120,7 @@ void receive_dataframe(uint8_t buffer[1024]) {
     }
 }
 
-int send_dataframe(
+int ServerSocket::send_dataframe(
     string ip_address,
     uint8_t messageID,
     int vector_size, // <= 15
@@ -156,7 +156,7 @@ int send_dataframe(
     return -1;
 }
 
-int setup()
+int ServerSocket::setup()
 {
     // Create server socket
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);

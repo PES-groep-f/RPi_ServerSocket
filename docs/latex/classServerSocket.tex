@@ -1,0 +1,103 @@
+\hypertarget{classServerSocket}{}\doxysection{Server\+Socket Class Reference}
+\label{classServerSocket}\index{ServerSocket@{ServerSocket}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classServerSocket_adcc79bff607d99e53227842cd02aa160}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Initialiseert de serversocket. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classServerSocket_a449a36ef68c65f8c2b0caca7c2e94e29}{handle\+Client}} (int client\+Socket, char ip\+\_\+address\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Behandelt communicatie met een verbonden client. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classServerSocket_ad1fbe2faf6a013c4942855142becd96d}{send\+\_\+dataframe}} (string ip\+\_\+address, uint8\+\_\+t message\+ID, int vector\+\_\+size, int datatype, uint8\+\_\+t $\ast$data, uint datasize)
+\begin{DoxyCompactList}\small\item\em Verstuurt een dataframe naar een specifieke client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classServerSocket_a604e35a1eb871a48754875e361743158}{receive\+\_\+dataframe}} (uint8\+\_\+t buffer\mbox{[}1024\mbox{]})
+\begin{DoxyCompactList}\small\item\em Verwerkt een ontvangen dataframe. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classServerSocket_a449a36ef68c65f8c2b0caca7c2e94e29}\label{classServerSocket_a449a36ef68c65f8c2b0caca7c2e94e29}} 
+\index{ServerSocket@{ServerSocket}!handleClient@{handleClient}}
+\index{handleClient@{handleClient}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{handleClient()}{handleClient()}}
+{\footnotesize\ttfamily void Server\+Socket\+::handle\+Client (\begin{DoxyParamCaption}\item[{int}]{client\+Socket,  }\item[{char}]{ip\+\_\+address\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Behandelt communicatie met een verbonden client. 
+
+Leest inkomende data van de client socket en verwerkt het met {\ttfamily receive\+\_\+dataframe}. Bij verbreking van de verbinding wordt de socket gesloten.
+
+
+\begin{DoxyParams}{Parameters}
+{\em client\+Socket} & De socket file descriptor van de client. \\
+\hline
+{\em ip\+\_\+address} & Het IP-\/adres van de client (gebruikt voor verwijderen uit {\ttfamily client\+Map}). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classServerSocket_a604e35a1eb871a48754875e361743158}\label{classServerSocket_a604e35a1eb871a48754875e361743158}} 
+\index{ServerSocket@{ServerSocket}!receive\_dataframe@{receive\_dataframe}}
+\index{receive\_dataframe@{receive\_dataframe}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{receive\_dataframe()}{receive\_dataframe()}}
+{\footnotesize\ttfamily void Server\+Socket\+::receive\+\_\+dataframe (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{buffer\mbox{[}1024\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Verwerkt een ontvangen dataframe. 
+
+Decodeert het dataframe volgens het dataformaat en roept afhankelijk van het message\+ID de juiste functies aan in de GUI.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & Een buffer van exact 1024 bytes die het volledige ontvangen bericht bevat. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classServerSocket_ad1fbe2faf6a013c4942855142becd96d}\label{classServerSocket_ad1fbe2faf6a013c4942855142becd96d}} 
+\index{ServerSocket@{ServerSocket}!send\_dataframe@{send\_dataframe}}
+\index{send\_dataframe@{send\_dataframe}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{send\_dataframe()}{send\_dataframe()}}
+{\footnotesize\ttfamily int Server\+Socket\+::send\+\_\+dataframe (\begin{DoxyParamCaption}\item[{string}]{ip\+\_\+address,  }\item[{uint8\+\_\+t}]{message\+ID,  }\item[{int}]{vector\+\_\+size,  }\item[{int}]{datatype,  }\item[{uint8\+\_\+t $\ast$}]{data,  }\item[{uint}]{datasize }\end{DoxyParamCaption})}
+
+
+
+Verstuurt een dataframe naar een specifieke client. 
+
+Bouwt een bericht op volgens het gedefinieerde dataformaat en verstuurt dit via de juiste client socket.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip\+\_\+address} & Het IP-\/adres van de client. \\
+\hline
+{\em message\+ID} & Een identificatiecode voor het bericht (eerste byte). \\
+\hline
+{\em vector\+\_\+size} & Aantal elementen in de datavector (maximaal 15). \\
+\hline
+{\em datatype} & Het datatype van de vector (0 = uint32\+\_\+t, 1 = int32\+\_\+t, 2 = float, 3 = bool, 4 = string). \\
+\hline
+{\em data} & Pointer naar de databuffer. \\
+\hline
+{\em datasize} & Grootte van de databuffer (maximaal 1022 bytes).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 bij succes, -\/1 bij fout (bv. IP niet gevonden of verzenden mislukt). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classServerSocket_adcc79bff607d99e53227842cd02aa160}\label{classServerSocket_adcc79bff607d99e53227842cd02aa160}} 
+\index{ServerSocket@{ServerSocket}!setup@{setup}}
+\index{setup@{setup}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily int Server\+Socket\+::setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialiseert de serversocket. 
+
+Maakt een nieuwe TCP socket aan, bindt deze aan poort 8080, en retourneert de socket descriptor.
+
+\begin{DoxyReturn}{Returns}
+De socket file descriptor bij succes, of 1 bij fout. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Server\+Socket/serversocket.\+h\item 
+Server\+Socket/serversocket.\+cpp\end{DoxyCompactItemize}

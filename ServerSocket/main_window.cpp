@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     ui.setupUi(this); 
     
@@ -60,7 +61,7 @@ void MainWindow::button_lampen_keuken_clicked() {
         raspberryClientIP,
         101, // message ID for the lamps
         1, // only one value
-        3, // boolean
+        DataType::BOOL,
         &data,
         1 // data size 
     );
@@ -73,7 +74,7 @@ void MainWindow::button_deuren_keuken_clicked() {
         raspberryClientIP,
         121, // message ID for the kitchen doors
         1, // only one value
-        3, // boolean
+        DataType::BOOL, // boolean
         &data,
         1 // data size 
     );
@@ -86,7 +87,7 @@ void MainWindow::button_deuren_restaurant_clicked() {
         raspberryClientIP,
         123, // message ID for the restaurant doors
         1, // only one value
-        3, // boolean
+        DataType::BOOL, // boolean
         &data,
         1 // data size 
     );
@@ -103,7 +104,7 @@ void MainWindow::button_ventilator_clicked() {
         Wemos_3_IP,
         113, // message ID for the ventilator
         1, // only one value
-        3, // boolean
+        DataType::BOOL, // boolean
         &data,
         1 // data size 
     );
@@ -122,7 +123,7 @@ void MainWindow::lichtkrant_apply_clicked() {
         Wemos_3_IP,
         104,
         1, // altijd 1 voor ASCII
-        4, // ASCII
+        DataType::ASCII, // ASCII
         reinterpret_cast<uint8_t*>(data),
         length + 1
     );
@@ -143,7 +144,7 @@ void MainWindow::slider_lampen_rgb_1_released() {
         Wemos_3_IP,
         102, // message ID for rgb lamp 1
         3, // three values
-        5, // uint8
+        DataType::UINT8, // uint8
         data,
         3 // data size 
     );
@@ -158,7 +159,7 @@ void MainWindow::slider_lampen_rgb_2_released() {
         Wemos_3_IP,
         103, // message ID for rgb lamp 2
         3, // three values 
-        5, // uint8
+        DataType::UINT8, // uint8
         data,
         3 // data size 
     );

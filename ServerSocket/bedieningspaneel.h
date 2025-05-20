@@ -29,7 +29,10 @@
 #include "statusled.h"
 
 QT_BEGIN_NAMESPACE
-
+/**
+ * @class Ui_MainWindow
+ * @brief Gegenereerde klasse. Niet handmatig aanpassen.
+ */
 class Ui_MainWindow
 {
 public:

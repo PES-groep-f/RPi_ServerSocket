@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int receive_data() {
+int SocketClient::receive_data() {
     while(1) {
 
         uint8_t received[1028] = {};
@@ -99,7 +99,7 @@ int receive_data() {
     }
 }
 
-int send_testData() {
+int SocketClient::send_testData() {
     while(1) {
         
         float co2_value = 600.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1100.0 - 600.0)));
@@ -128,8 +128,7 @@ int send_testData() {
 }
 
 // Take values from the I2C bus and translate them to socket messages
-float environment_values[3];
-int send_data() {
+int SocketClient::send_data() {
     while(1) {
 
         // environment sensor
@@ -155,7 +154,7 @@ int send_data() {
     }
 }
 
-int send_dataframe(
+int SocketClient::send_dataframe(
     uint8_t messageID,
     int vector_size, // <= 15
     int datatype,    //  0..4, see docs/dataformaat
