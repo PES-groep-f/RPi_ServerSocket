@@ -1,0 +1,11 @@
+[Unit]
+Description=Raspberry Pi Server & Gui Interface
+After=network.target graphical.target
+
+[Service]
+ExecStart=/home/GroepF/
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
