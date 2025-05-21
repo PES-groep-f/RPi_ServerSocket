@@ -1,0 +1,11 @@
+[Unit]
+Description=Raspberry Pi Client & I2C
+After=network.target
+
+[Service]
+ExecStart=/home/GroepF/
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
