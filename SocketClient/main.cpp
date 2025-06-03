@@ -6,7 +6,6 @@
 #include <arpa/inet.h> 
 #include <chrono>
 #include <thread>
-#include <memory>
 
 #include "globals.h"
 #include "socketclient.h"
@@ -14,14 +13,6 @@
 
 using namespace std;
 
-/**
- * @brief Startpunt van het programma.
- * 
- * Initialiseert de I2C-communicatie, maakt verbinding met de server en start 
- * de verzend- en ontvangstthreads voor de SocketClient.
- * 
- * @return int Retourneert 0 bij succesvol beëindigen, anders een foutcode.
- */
 int main()
 {
     if(setup_I2C()) {
@@ -42,10 +33,8 @@ int main()
     cout << "Connected to the server. Sending messages..." << endl;
     clientSocket = sock;
 
-    unique_ptr<SocketClient> sclient = make_unique<SocketClient>();
-
-    thread receiveThread(&SocketClient::receive_data, sclient.get());
-    thread sendThread(&SocketClient::send_data, sclient.get());
+    thread receiveThread(receive_data);
+    thread sendThread(send_data);
     // thread test_sendThread(send_testData);
 
     receiveThread.join();
@@ -53,6 +42,9 @@ int main()
     // test_sendThread.join();
 
     close(clientSocket);
-
+	close(fd0);
+	close(fd1);
+	close(fd2);
+	close(fd3);
     return 0;
 }

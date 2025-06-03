@@ -211,51 +211,13 @@
              </property>
             </spacer>
            </item>
-           <item row="2" column="1">
-            <widget class="QSlider" name="lamp2RED">
+           <item row="2" column="1" colspan="5">
+            <widget class="BrandAlarmKnop" name="brandAlarmKnop">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-             <property name="maximum">
-              <number>255</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QSlider" name="lamp2GREEN">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximum">
-              <number>255</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="5">
-            <widget class="QSlider" name="lamp2BLUE">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximum">
-              <number>255</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
@@ -269,7 +231,7 @@
            <item row="2" column="0">
             <widget class="QLabel" name="lamp2Label">
              <property name="text">
-              <string>Lamp2</string>
+              <string>Brandalarm</string>
              </property>
             </widget>
            </item>

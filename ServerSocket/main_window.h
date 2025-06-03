@@ -78,6 +78,12 @@ public slots:
      */
     void updateRestaurantDeurenKnop(bool value);
 
+    /**
+     * @brief Zet de status van de brandalarmknop.
+     * @param value True om aan te zetten, false om uit te zetten.
+     */
+    void updateBrandAlarmKnop(bool value);
+
 private slots:
     /// Behandelt klik op de knop voor keukenlampen.
     void button_lampen_keuken_clicked();
@@ -94,14 +100,19 @@ private slots:
     /// Behandelt loslaten van RGB-sliders voor lamp 1.
     void slider_lampen_rgb_1_released();
 
-    /// Behandelt loslaten van RGB-sliders voor lamp 2.
-    void slider_lampen_rgb_2_released();
+    // Zet het brandalarm uit.
+    void brandalarm_powerChanged();
 
     /// Behandelt toepassing van tekstinvoer voor de lichtkrant.
     void lichtkrant_apply_clicked();
 
     /// Behandelt reset van de lichtkrantinvoer.
     void lichtkrant_reset_clicked();
+
+    // Behandelt de reset van de drukknoppen status LEDs.
+    void statusled_0_clicked();
+    void statusled_1_clicked();
+    void statusled_2_clicked();
 
 private:
     Ui::MainWindow ui; ///< UI-elementen gegenereerd door Qt Designer.

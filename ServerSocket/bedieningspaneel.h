@@ -27,12 +27,10 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "statusled.h"
+#include "brandalarmknop.h"
 
 QT_BEGIN_NAMESPACE
-/**
- * @class Ui_MainWindow
- * @brief Gegenereerde klasse. Niet handmatig aanpassen.
- */
+
 class Ui_MainWindow
 {
 public:
@@ -55,9 +53,7 @@ public:
     QLabel *BLUELabel;
     QSpacerItem *SliderSpacer2;
     QSpacerItem *sliderSpacer1;
-    QSlider *lamp2RED;
-    QSlider *lamp2GREEN;
-    QSlider *lamp2BLUE;
+    BrandAlarmKnop *brandAlarmKnop;
     QLabel *lamp1Label;
     QLabel *lamp2Label;
     QVBoxLayout *testKnoppenLayout;
@@ -124,6 +120,7 @@ public:
 
         ventilatorKnop = new QPushButton(layoutWidget);
         ventilatorKnop->setCheckable(true);
+        ventilatorKnop->setChecked(true);
         ventilatorKnop->setObjectName(QString::fromUtf8("ventilatorKnop"));
         sizePolicy2.setHeightForWidth(ventilatorKnop->sizePolicy().hasHeightForWidth());
         ventilatorKnop->setSizePolicy(sizePolicy2);
@@ -207,32 +204,38 @@ public:
 
         sliderGrid->addItem(sliderSpacer1, 1, 2, 3, 1);
 
-        lamp2RED = new QSlider(layoutWidget);
-        lamp2RED->setObjectName(QString::fromUtf8("lamp2RED"));
-        sizePolicy3.setHeightForWidth(lamp2RED->sizePolicy().hasHeightForWidth());
-        lamp2RED->setSizePolicy(sizePolicy3);
-        lamp2RED->setMaximum(255);
-        lamp2RED->setOrientation(Qt::Vertical);
+        brandAlarmKnop = new BrandAlarmKnop(layoutWidget);
+        brandAlarmKnop->setObjectName(QString::fromUtf8("brandAlarmKnop"));
+        sizePolicy3.setHeightForWidth(brandAlarmKnop->sizePolicy().hasHeightForWidth());
+        brandAlarmKnop->setSizePolicy(sizePolicy3);
+        sliderGrid->addWidget(brandAlarmKnop, 2, 1, 1, 5);
 
-        sliderGrid->addWidget(lamp2RED, 2, 1, 1, 1);
+        // lamp2RED = new QSlider(layoutWidget);
+        // lamp2RED->setObjectName(QString::fromUtf8("lamp2RED"));
+        // sizePolicy3.setHeightForWidth(lamp2RED->sizePolicy().hasHeightForWidth());
+        // lamp2RED->setSizePolicy(sizePolicy3);
+        // lamp2RED->setMaximum(255);
+        // lamp2RED->setOrientation(Qt::Vertical);
 
-        lamp2GREEN = new QSlider(layoutWidget);
-        lamp2GREEN->setObjectName(QString::fromUtf8("lamp2GREEN"));
-        sizePolicy3.setHeightForWidth(lamp2GREEN->sizePolicy().hasHeightForWidth());
-        lamp2GREEN->setSizePolicy(sizePolicy3);
-        lamp2GREEN->setMaximum(255);
-        lamp2GREEN->setOrientation(Qt::Vertical);
+        // sliderGrid->addWidget(lamp2RED, 2, 1, 1, 1);
 
-        sliderGrid->addWidget(lamp2GREEN, 2, 3, 1, 1);
+        // lamp2GREEN = new QSlider(layoutWidget);
+        // lamp2GREEN->setObjectName(QString::fromUtf8("lamp2GREEN"));
+        // sizePolicy3.setHeightForWidth(lamp2GREEN->sizePolicy().hasHeightForWidth());
+        // lamp2GREEN->setSizePolicy(sizePolicy3);
+        // lamp2GREEN->setMaximum(255);
+        // lamp2GREEN->setOrientation(Qt::Vertical);
 
-        lamp2BLUE = new QSlider(layoutWidget);
-        lamp2BLUE->setObjectName(QString::fromUtf8("lamp2BLUE"));
-        sizePolicy3.setHeightForWidth(lamp2BLUE->sizePolicy().hasHeightForWidth());
-        lamp2BLUE->setSizePolicy(sizePolicy3);
-        lamp2BLUE->setMaximum(255);
-        lamp2BLUE->setOrientation(Qt::Vertical);
+        // sliderGrid->addWidget(lamp2GREEN, 2, 3, 1, 1);
 
-        sliderGrid->addWidget(lamp2BLUE, 2, 5, 1, 1);
+        // lamp2BLUE = new QSlider(layoutWidget);
+        // lamp2BLUE->setObjectName(QString::fromUtf8("lamp2BLUE"));
+        // sizePolicy3.setHeightForWidth(lamp2BLUE->sizePolicy().hasHeightForWidth());
+        // lamp2BLUE->setSizePolicy(sizePolicy3);
+        // lamp2BLUE->setMaximum(255);
+        // lamp2BLUE->setOrientation(Qt::Vertical);
+
+        // sliderGrid->addWidget(lamp2BLUE, 2, 5, 1, 1);
 
         lamp1Label = new QLabel(layoutWidget);
         lamp1Label->setObjectName(QString::fromUtf8("lamp1Label"));
@@ -418,7 +421,7 @@ public:
         GREENLabel->setText(QCoreApplication::translate("MainWindow", "GREEN", nullptr));
         BLUELabel->setText(QCoreApplication::translate("MainWindow", "BLUE", nullptr));
         lamp1Label->setText(QCoreApplication::translate("MainWindow", "Lamp1", nullptr));
-        lamp2Label->setText(QCoreApplication::translate("MainWindow", "Lamp2", nullptr));
+        lamp2Label->setText(QCoreApplication::translate("MainWindow", "Brandalarm", nullptr));
         testKnopTafel1->setText(QCoreApplication::translate("MainWindow", "Drukknop Tafel 1", nullptr));
         testKnopTafel2->setText(QCoreApplication::translate("MainWindow", "Drukknop Tafel 2", nullptr));
         testKnopTafel3->setText(QCoreApplication::translate("MainWindow", "Drukknop Tafel 3", nullptr));

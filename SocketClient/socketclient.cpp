@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int SocketClient::receive_data() {
+int receive_data() {
     while(1) {
 
         uint8_t received[1028] = {};
@@ -74,6 +74,10 @@ int SocketClient::receive_data() {
                             cerr << "Could not write to keuken deuren!" << endl;
                         }
                         break;
+                    case 131:
+                        if(write_brandalarm_signal(data[0])) {
+                            cerr << "Could not write brandalarm data!" <<endl;
+                        }
                     case 123:
                         if(write_restaurant_deuren_data(data[0])) {
                             cerr << "Could not write to restaurant deuren!" << endl;
@@ -99,7 +103,7 @@ int SocketClient::receive_data() {
     }
 }
 
-int SocketClient::send_testData() {
+int send_testData() {
     while(1) {
         
         float co2_value = 600.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1100.0 - 600.0)));
@@ -128,7 +132,8 @@ int SocketClient::send_testData() {
 }
 
 // Take values from the I2C bus and translate them to socket messages
-int SocketClient::send_data() {
+float environment_values[3];
+int send_data() {
     while(1) {
 
         // environment sensor
@@ -137,6 +142,7 @@ int SocketClient::send_data() {
         } else if (read_co2_data(environment_values)) { 
             cerr << "Failed to read co2 data, not sending to server!" << endl;
         } else {
+
             uint8_t send_buffer[12];
             memcpy(send_buffer, environment_values, 12);
             if(send_dataframe(
@@ -154,7 +160,7 @@ int SocketClient::send_data() {
     }
 }
 
-int SocketClient::send_dataframe(
+int send_dataframe(
     uint8_t messageID,
     int vector_size, // <= 15
     int datatype,    //  0..4, see docs/dataformaat

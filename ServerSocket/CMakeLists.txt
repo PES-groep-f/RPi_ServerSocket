@@ -3,7 +3,7 @@ project(ServerSocket)
 set(CMAKE_AUTOMOC ON) 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_PREFIX_PATH "/home/pigroepg/QT/6.7.0/gcc_arm64")
+#set(CMAKE_PREFIX_PATH "/home/pigroepg/QT/6.7.0/gcc_arm64")
 
 set(SOURCES
     main.cpp
@@ -15,6 +15,7 @@ set(SOURCES
 set(HEADERS
     globals.h
     statusled.h
+    brandalarmknop.h
     bedieningspaneel.h
     serversocket.h
     main_window.h

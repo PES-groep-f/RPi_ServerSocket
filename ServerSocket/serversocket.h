@@ -70,6 +70,6 @@ public:
      */
     void receive_dataframe(uint8_t buffer[1024]);
 
-    #endif // SERVERSOCKET_H
-}
+};
 
+#endif // SERVERSOCKET_H
