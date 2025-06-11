@@ -9,14 +9,11 @@
 #include <bitset>
 
 #include "socketclient.h"
-#include "I2Cclient.h"
-#include "globals.h"
-#include "I2Cclient.h"
 
 using namespace std;
 
-int receive_data() {
-    while(1) {
+int SocketClient::receive_data() {
+    while(true) {
 
         uint8_t received[1028] = {};
 
@@ -65,21 +62,22 @@ int receive_data() {
 
                 switch(messageID) {
                     case 101:
-                        if(write_keukenlampen_data(data[0])) {
+                        if(i2cClient.write_keukenlampen_data(data[0])) {
                             cerr << "Could not write to keukenlampen!" << endl;
                         }
                         break;
                     case 121:
-                        if(write_keuken_deuren_data(data[0])) {
+                        if(i2cClient.write_keuken_deuren_data(data[0])) {
                             cerr << "Could not write to keuken deuren!" << endl;
                         }
                         break;
                     case 131:
-                        if(write_brandalarm_signal(data[0])) {
+                        if(i2cClient.write_brandalarm_signal(data[0])) {
                             cerr << "Could not write brandalarm data!" <<endl;
                         }
+                        break;
                     case 123:
-                        if(write_restaurant_deuren_data(data[0])) {
+                        if(i2cClient.write_restaurant_deuren_data(data[0])) {
                             cerr << "Could not write to restaurant deuren!" << endl;
                         }
                         break;
@@ -101,9 +99,11 @@ int receive_data() {
             }
         }
     }
+
+    return 0;
 }
 
-int send_testData() {
+int SocketClient::send_testData() {
     while(1) {
         
         float co2_value = 600.0 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1100.0 - 600.0)));
@@ -132,14 +132,12 @@ int send_testData() {
 }
 
 // Take values from the I2C bus and translate them to socket messages
-float environment_values[3];
-int send_data() {
-    while(1) {
-
+int SocketClient::send_data() {
+    while(true) {
         // environment sensor
-        if(read_temp_humidity_data(environment_values)) {
+        if(i2cClient.read_temp_humidity_data(environment_values)) {
             cerr << "Failed to read temperature/humidity data, not sending to server!" << endl;
-        } else if (read_co2_data(environment_values)) { 
+        } else if (i2cClient.read_co2_data(environment_values)) { 
             cerr << "Failed to read co2 data, not sending to server!" << endl;
         } else {
 
@@ -160,7 +158,7 @@ int send_data() {
     }
 }
 
-int send_dataframe(
+int SocketClient::send_dataframe(
     uint8_t messageID,
     int vector_size, // <= 15
     int datatype,    //  0..4, see docs/dataformaat

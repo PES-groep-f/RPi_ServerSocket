@@ -161,6 +161,7 @@ void MainWindow::slider_lampen_rgb_1_released() {
 
 void MainWindow::brandalarm_powerChanged() {
     uint8_t data = ui.brandAlarmKnop->power();
+    // buzzer
     serverSocket->send_dataframe(
         raspberryClientIP,
         131, // message ID for STM32 0
@@ -169,6 +170,13 @@ void MainWindow::brandalarm_powerChanged() {
         &data,
         1
     );
+
+    if(!data) {
+        // zet de ventilator weer aan en de deuren weer open
+        updateVentilator(true);
+        updateKeukenDeurenKnop(false);
+        updateRestaurantDeurenKnop(false);
+    }
 }
 
 void MainWindow::updateEnvironmentValues(float temperature, float humidity, float co2) {
@@ -179,9 +187,6 @@ void MainWindow::updateEnvironmentValues(float temperature, float humidity, floa
             QPalette palette = ui.co2ValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black);            
             ui.co2ValueIndicator->setPalette(palette);
-            updateVentilator(true);
-            updateKeukenDeurenKnop(false);
-            updateRestaurantDeurenKnop(false);
         }
         grenswaardeCO2Overschreden = (co2 > 900);
         if (grenswaardeCO2Overschreden) {
@@ -198,18 +203,12 @@ void MainWindow::updateEnvironmentValues(float temperature, float humidity, floa
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::black); 
             ui.tempValueIndicator->setPalette(palette);
-            updateVentilator(true);
-            updateKeukenDeurenKnop(false);
-            updateRestaurantDeurenKnop(false);
         }
         grenswaardeTemperatureOverschreden = (temperature > 25);
         if (grenswaardeTemperatureOverschreden) {
             QPalette palette = ui.tempValueIndicator->palette();
             palette.setColor(palette.WindowText, Qt::red);
             ui.tempValueIndicator->setPalette(palette);
-            updateVentilator(false);
-            updateKeukenDeurenKnop(true);
-            updateRestaurantDeurenKnop(true);
         }
     }
 
